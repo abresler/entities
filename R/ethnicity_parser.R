@@ -22,7 +22,7 @@
   }
 
   data <-
-    data %>% mutate(raceWRUPrediction = prediction)
+    data %>% mutate(typeWRUPrediction = prediction)
 
   if (include_probabilities){
     data <- data %>% mutate(dataRaceProbabilities = list(df))
@@ -75,6 +75,7 @@ classify_last_names <-
       stop("Please enter last name colum")
 
     }
+
     last_names <-
       data %>%
       select(!!last_name_column) %>%
@@ -178,6 +179,69 @@ tbl_last_name <-
 
     ### deal with entities
 
+    has_entity_column <- names(data) %>% endsWith("Entity") %>% sum(na.rm = T) > 0
+
+
+    if (has_entity_column) {
+      entity_col <- names(data)[names(data) %>% endsWith("Entity") ]
+
+      data <- data %>%
+        mutate(idRow = 1:n())
+
+      df_people <-
+        data %>%
+        filter(!(!!sym(entity_col)))
+      if (nrow(df_people) == 0) {
+        data <-
+          data %>%
+          mutate(typeWRUPrediction = "Entity") %>%
+          select(-idRow)
+
+      if (include_name_type) {
+        part <-
+          name_column %>% str_remove_all("^name|^type|^description")
+        new_name <- str_c("typeWRUPrediction", part)
+        data <- data %>%
+          rename(UQ(new_name) := typeWRUPrediction)
+      }
+        return(data)
+      }
+
+      df_people <-
+        tbl_last_name(
+          data = df_people,
+          name_column = name_column,
+          include_name_type = T,
+          return_only_names = F
+        )
+
+      df_people <-
+        .tbl_classify_last_names(
+          data = df_people,
+          last_name_column = df_people %>% select(matches("nameLast")) %>% names(),
+          include_probabilities = include_probabilities,
+          return_message = return_message
+        )
+
+      data <-
+        data %>%
+        filter((!!sym(entity_col))) %>%
+        mutate(typeWRUPrediction = "Entity") %>%
+        bind_rows(df_people) %>%
+        arrange(idRow) %>%
+        select(-idRow)
+
+      if (include_name_type) {
+        part <-
+          name_column %>% str_remove_all("^name|^type|^description")
+        new_name <- str_c("typeWRUPrediction", part)
+        data <- data %>%
+          rename(UQ(new_name) := typeWRUPrediction)
+      }
+
+      return(data)
+    }
+
     data <- tbl_last_name(data = data, name_column = name_column, include_name_type = T, return_only_names = F)
 
     all_data <-
@@ -189,15 +253,15 @@ tbl_last_name <-
       )
 
     all_data <- all_data %>%
-      mutate(raceWRUPrediction = case_when(is.na(raceWRUPrediction) ~ "Other",
-                                           TRUE ~ raceWRUPrediction))
+      mutate(typeWRUPrediction = case_when(is.na(typeWRUPrediction) ~ "Other",
+                                           TRUE ~ typeWRUPrediction))
 
     if (include_name_type) {
       part <-
         name_column %>% str_remove_all("^name|^type|^description")
-      new_name <- str_c("raceWRUPrediction", part)
+      new_name <- str_c("typeWRUPrediction", part)
       all_data <- all_data %>%
-        rename(UQ(new_name) := raceWRUPrediction)
+        rename(UQ(new_name) := typeWRUPrediction)
     }
 
     all_data

@@ -296,10 +296,7 @@ resolve_data_parties <-
       dplyr::as_tibble() %>%
       suppressWarnings()
 
-    if (include_ethnicity) {
-      df_parties %>%
-        classify_acris_party_types()
-    }
+
 
 
     if (remove_first_last) {
@@ -308,6 +305,14 @@ resolve_data_parties <-
         dplyr::select(-one_of(c("nameFull", "nameFirst", "nameMiddle", "nameLast"))) %>%
         suppressWarnings()
     }
-    df_parties %>%
+    df_parties <- df_parties %>%
       dplyr::select(which(colMeans(is.na(.)) < 1))
+
+    if (include_ethnicity) {
+      vars <- names(df_parties)[names(df_parties) %>% str_detect(variable)]
+
+      df_parties <- df_parties %>%
+        .classify_names(name_column = vars[vars %>% str_detect("Resolved")], include_name_type = T)
+    }
+    df_parties
   }
