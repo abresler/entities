@@ -1,0 +1,11 @@
+Package: entities
+Type: Package
+Title: Tools to deal with entities
+Version: 0.01.0
+Authors@R: person("Alex", "Bresler", email = "abresler@asbcllc.com", role = c("aut", "cre"))
+Maintainer: Alex Bresler <abresler@asbcllc.com>
+URL: https://github.com/abresler/entites
+Description: Clean, resolve and parse your entities.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true

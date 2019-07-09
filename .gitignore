@@ -1,0 +1,10 @@
+.Rproj.user
+.Rhistory
+.RData
+.httr-oauth
+.*.Rnb.cached
+/dev
+/deprecated
+.Rproj
+./tests
+/old
