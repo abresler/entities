@@ -14,24 +14,24 @@
   if ("soundex" %in% phonics_methods) {
     data <-
       data %>%
-      mutate(UQ(glue::glue("slugSoundex{part}")) := x %>% soundex(maxCodeLen = phonics_length, clean = F))
+      mutate(UQ(glue::glue("slugSoundex{part}")) := x %>% phonics::soundex(maxCodeLen = phonics_length, clean = F))
   }
 
   if ("caverphone" %in% phonics_methods) {
     data <-
       data %>%
-      mutate(UQ(glue::glue("slugCaverphone{part}")) := x %>% caverphone(maxCodeLen = phonics_length, clean = F))
+      mutate(UQ(glue::glue("slugCaverphone{part}")) := x %>% phonics::caverphone(maxCodeLen = phonics_length, clean = F))
   }
 
   if ("nysiis" %in% phonics_methods) {
     data <-
       data %>%
-      mutate(UQ(glue::glue("slugNYSIIS{part}")) := x %>% nysiis(maxCodeLen = phonics_length, clean = F))
+      mutate(UQ(glue::glue("slugNYSIIS{part}")) := x %>% phonics::nysiis(maxCodeLen = phonics_length, clean = F))
   }
   if ("metaphone" %in% phonics_methods) {
     data <-
       data %>%
-      mutate(UQ(glue::glue("slugMetaphone{part}")) := x %>% metaphone(maxCodeLen = phonics_length, clean = F))
+      mutate(UQ(glue::glue("slugMetaphone{part}")) := x %>% phonics::metaphone(maxCodeLen = phonics_length, clean = F))
   }
 
   data
@@ -46,6 +46,7 @@
 #'
 #' @return
 #' @export
+#' @import phonics
 #'
 #' @examples
 tbl_phonics <-
@@ -54,7 +55,7 @@ tbl_phonics <-
            phonics_methods = c("soundex"),
            phonics_length = 12L) {
 
-    if (length(name_columns) > 0) {
+    if (length(name_columns) == 0) {
       "Enter name columns" %>% message()
       return(data)
     }

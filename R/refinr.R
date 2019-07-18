@@ -41,17 +41,17 @@
 
       x <-
         x %>%
-        key_collision_merge(ignore_strings = ignores, bus_suffix = use_business_suffix)
+        refinr::key_collision_merge(ignore_strings = ignores, bus_suffix = use_business_suffix)
     } else {
       x <-
         x %>%
-        key_collision_merge(bus_suffix = use_business_suffix)
+        refinr::key_collision_merge(bus_suffix = use_business_suffix)
     }
 
 
     if (use_n_gram_merge) {
       x <-
-        n_gram_merge(
+        refinr::n_gram_merge(
           vect = x,
           ignore_strings = ignore_words,
           edit_threshold = edit_threshold,
@@ -74,14 +74,14 @@
       if ("soundex" %in% phonics_methods) {
         data <-
           data %>%
-          mutate(UQ(glue::glue("slugSoundex{part}")) := x %>% soundex(maxCodeLen = phonics_length, clean = F))
+          mutate(UQ(glue::glue("slugSoundex{part}")) := x %>% phonics::soundex(maxCodeLen = phonics_length, clean = F))
       }
 
       if ("caverphone" %in% phonics_methods) {
         data <-
           data %>%
           mutate(
-            UQ(glue::glue("slugCaverphone{part}")) := x %>% caverphone(maxCodeLen = phonics_length, clean = F)
+            UQ(glue::glue("slugCaverphone{part}")) := x %>% phonics::caverphone(maxCodeLen = phonics_length, clean = F)
           )
       }
 
@@ -119,6 +119,7 @@
 #' @param ...
 #'
 #' @return
+#' @import refinr phonics
 #' @export
 #'
 #' @examples
