@@ -1,7 +1,7 @@
 Package: entities
 Type: Package
 Title: Tools to deal with entities
-Version: 0.01.0
+Version: 0.01.091
 Authors@R: person("Alex", "Bresler", email = "abresler@asbcllc.com", role = c("aut", "cre"))
 Maintainer: Alex Bresler <abresler@asbcllc.com>
 URL: https://github.com/abresler/entites

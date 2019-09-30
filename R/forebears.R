@@ -104,8 +104,8 @@ dictionary_fb_regions <-
 .parse_fb_name_url <- function(url = "https://forebears.io/a?c=Name&m=getGeo&i=209524&p=18000", return_wide = T) {
   options(scipen = 9999999)
   data <-
-    url %>% fromJSON(simplifyDataFrame = T) %>% enframe() %>% mutate(value = value %>% map(enframe)) %>% unnest() %>% mutate(value = value %>% map(enframe)) %>%
-    unnest() %>%
+    url %>% fromJSON(simplifyDataFrame = T) %>% enframe() %>% mutate(value = value %>% map(enframe)) %>% unnest_legacy() %>% mutate(value = value %>% map(enframe)) %>%
+    unnest_legacy() %>%
     mutate(value = value %>% flatten_dbl()) %>%
     setNames(c("year", "idCountry", "item", "value")) %>%
     mutate_at(c("year", "idCountry",  "value"),
@@ -477,7 +477,7 @@ fb_last_names <-
           df <-
             all_data %>%
             select(one_of(c(base_names, data_name))) %>%
-            unnest() %>%
+            unnest_legacy() %>%
             .format_data()
 
           assign(x = table_name, value = df, envir = .GlobalEnv)
@@ -487,7 +487,7 @@ fb_last_names <-
     if (!nest_data) {
       all_data <-
         all_data %>%
-        unnest()
+        unnest_legacy()
     }
 
     all_data %>%

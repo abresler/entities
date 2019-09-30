@@ -7,7 +7,7 @@
     df_parties <-
       data %>%
       select(idDocument, dataParties) %>%
-      unnest()
+      unnest_legacy()
 
     if (df_parties %>% tibble::has_name("nameEntityParty")) {
       df_parties <-
