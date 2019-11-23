@@ -6,6 +6,9 @@
 \usage{
 us_religions()
 }
+\value{
+
+}
 \description{
 Forebears US Religion data
 }

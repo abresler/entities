@@ -4,12 +4,19 @@
 \alias{classify_wru_names}
 \title{Classify name columns for WRU ethnicity}
 \usage{
-classify_wru_names(data, name_columns = NULL,
-  include_probabilities = F, include_name_type = T,
-  return_message = T)
+classify_wru_names(
+  data,
+  name_columns = NULL,
+  include_probabilities = F,
+  include_name_type = T,
+  return_message = T
+)
 }
 \arguments{
 \item{return_message}{}
+}
+\value{
+
 }
 \description{
 Classify name columns for WRU ethnicity

@@ -6,6 +6,9 @@
 \usage{
 dictionary_fb_countries()
 }
+\value{
+
+}
 \description{
 Forebears country dictionary
 }

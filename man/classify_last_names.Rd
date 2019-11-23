@@ -4,9 +4,12 @@
 \alias{classify_last_names}
 \title{Classify last names}
 \usage{
-classify_last_names(last_names = c("Jackson", "Cheng", "Wen"),
-  include_probabilities = F, last_name_column = "nameLast",
-  return_message = T)
+classify_last_names(
+  last_names = c("Jackson", "Cheng", "Wen"),
+  include_probabilities = F,
+  last_name_column = "nameLast",
+  return_message = T
+)
 }
 \arguments{
 \item{last_names}{vector of last names}
@@ -16,6 +19,9 @@ classify_last_names(last_names = c("Jackson", "Cheng", "Wen"),
 \item{last_name_column}{if not \code{NULL} last name column}
 
 \item{return_message}{}
+}
+\value{
+
 }
 \description{
 Classify a vectore last names using the WRU model

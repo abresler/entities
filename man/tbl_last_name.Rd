@@ -4,11 +4,18 @@
 \alias{tbl_last_name}
 \title{Parse name column into parts}
 \usage{
-tbl_last_name(data, name_column = "namePrincipalInvestigator",
-  include_name_type = F, return_only_names = F)
+tbl_last_name(
+  data,
+  name_column = "namePrincipalInvestigator",
+  include_name_type = F,
+  return_only_names = F
+)
 }
 \arguments{
 \item{return_only_names}{}
+}
+\value{
+
 }
 \description{
 Parse name column into parts

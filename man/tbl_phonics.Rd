@@ -4,11 +4,18 @@
 \alias{tbl_phonics}
 \title{Append phonics methods to a tbl}
 \usage{
-tbl_phonics(data, name_columns = NULL, phonics_methods = c("soundex"),
-  phonics_length = 12L)
+tbl_phonics(
+  data,
+  name_columns = NULL,
+  phonics_methods = c("soundex"),
+  phonics_length = 12L
+)
 }
 \arguments{
 \item{phonics_length}{}
+}
+\value{
+
 }
 \description{
 Append phonics methods to a tbl

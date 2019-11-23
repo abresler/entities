@@ -6,6 +6,9 @@
 \usage{
 us_political_affiliation()
 }
+\value{
+
+}
 \description{
 US political affiliations by last name
 }

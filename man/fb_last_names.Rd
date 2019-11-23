@@ -4,9 +4,14 @@
 \alias{fb_last_names}
 \title{Forebears last name data}
 \usage{
-fb_last_names(last_names = NULL, sleep_time = NULL,
-  include_similar_names = F, return_message = T, nest_data = F,
-  assign_to_environment = T)
+fb_last_names(
+  last_names = NULL,
+  sleep_time = NULL,
+  include_similar_names = F,
+  return_message = T,
+  nest_data = F,
+  assign_to_environment = T
+)
 }
 \arguments{
 \item{last_names}{vector of last names}
@@ -20,6 +25,9 @@ fb_last_names(last_names = NULL, sleep_time = NULL,
 \item{nest_data}{if \code{TRUE} nests tibble}
 
 \item{assign_to_environment}{if \code{TRUE} assigns nested tibbles to environment}
+}
+\value{
+
 }
 \description{
 Forebears last name data

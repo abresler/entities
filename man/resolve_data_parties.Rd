@@ -4,9 +4,13 @@
 \alias{resolve_data_parties}
 \title{Resolve List of Parties}
 \usage{
-resolve_data_parties(parties = c("LIU, YUAN-CHI", "ASBC LLC"),
-  entity_words = NULL, include_ethnicity = T,
-  remove_first_last = TRUE, variable = "nameOwnerPrimary")
+resolve_data_parties(
+  parties = c("LIU, YUAN-CHI", "ASBC LLC"),
+  entity_words = NULL,
+  include_ethnicity = T,
+  remove_first_last = TRUE,
+  variable = "nameOwnerPrimary"
+)
 }
 \arguments{
 \item{parties}{vector of parties}

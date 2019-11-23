@@ -11,6 +11,9 @@ fb_locations(locations = NULL, return_message = T)
 
 \item{return_message}{if \code{TRUE} returns message}
 }
+\value{
+
+}
 \description{
 Forebears country data
 }

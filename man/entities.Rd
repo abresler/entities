@@ -3,7 +3,6 @@
 \docType{package}
 \name{entities}
 \alias{entities}
-\alias{entities-package}
 \title{entities}
 \description{
 Tools to resolve, parse and clean entities

@@ -4,8 +4,11 @@
 \alias{re_resolve_documents}
 \title{Re - Resolve ACRIS Parties}
 \usage{
-re_resolve_documents(base_path = "Desktop/nyc_real_estate_data/ACRIS/",
-  documents = "ucc3 assignment", boroughs = c("brooklyn", "manhattan"))
+re_resolve_documents(
+  base_path = "Desktop/nyc_real_estate_data/ACRIS/",
+  documents = "ucc3 assignment",
+  boroughs = c("brooklyn", "manhattan")
+)
 }
 \arguments{
 \item{base_path}{base ACRIS data path}

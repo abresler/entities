@@ -4,9 +4,14 @@
 \alias{query_words}
 \title{Query Search engies}
 \usage{
-query_words(engines = c("ddg", "google", "baidu", "startpage", "yandex"),
-  words = NULL, quote = T, rename_output = NULL,
-  additional_terms = NULL, return_message = T)
+query_words(
+  engines = c("ddg", "google", "baidu", "startpage", "yandex"),
+  words = NULL,
+  quote = T,
+  rename_output = NULL,
+  additional_terms = NULL,
+  return_message = T
+)
 }
 \arguments{
 \item{engines}{vector of search engines to search \itemize{
@@ -18,6 +23,9 @@ query_words(engines = c("ddg", "google", "baidu", "startpage", "yandex"),
 }}
 
 \item{return_message}{}
+}
+\value{
+
 }
 \description{
 Query Search engies
