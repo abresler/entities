@@ -4,7 +4,7 @@
 \alias{us_political_affiliation}
 \title{US political affiliations by last name}
 \usage{
-us_political_affiliation()
+us_political_affiliation(snake_names = F)
 }
 \value{
 

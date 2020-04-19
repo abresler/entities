@@ -8,6 +8,7 @@ tbl_last_name(
   data,
   name_column = "namePrincipalInvestigator",
   include_name_type = F,
+  snake_names = F,
   return_only_names = F
 )
 }

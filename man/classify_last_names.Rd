@@ -8,6 +8,7 @@ classify_last_names(
   last_names = c("Jackson", "Cheng", "Wen"),
   include_probabilities = F,
   last_name_column = "nameLast",
+  snake_names = F,
   return_message = T
 )
 }

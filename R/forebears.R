@@ -302,7 +302,7 @@ dictionary_fb_regions <-
 #' @examples
 #' us_political_affiliation()
 us_political_affiliation <-
-  memoise::memoise(function() {
+  memoise::memoise(function(snake_names = F) {
     page <- "https://forebears.io/united-states/demographics/political-affiliation-surname" %>%
       read_html()
     table <- page %>% html_table(fill = F)
@@ -354,6 +354,12 @@ us_political_affiliation <-
       select(nameParty, everything()) %>%
       .format_data()
 
+    if (snake_names) {
+      data <-
+        data %>%
+        janitor::clean_names()
+    }
+
     data
 
   })
@@ -366,7 +372,7 @@ us_political_affiliation <-
 #' @examples
 #' us_religions()
 us_religions <-
-  memoise::memoise(function() {
+  memoise::memoise(function(snake_names = F) {
     page <-
       "https://forebears.io/united-states/demographics/religion-surname" %>%
       read_html()
@@ -411,6 +417,12 @@ us_religions <-
       mutate(countryRank, countryDensity) %>%
       .format_data()
 
+    if (snake_names) {
+      data <-
+        data %>%
+        janitor::clean_names()
+    }
+
     data
 
   })
@@ -434,6 +446,7 @@ fb_last_names <-
            include_similar_names = F,
            return_message = T,
            nest_data = F,
+           snake_names = F,
            assign_to_environment = T) {
     if (length(last_names) == 0) {
       stop("Enter last name")
@@ -490,8 +503,17 @@ fb_last_names <-
         unnest()
     }
 
+    all_data  <-
     all_data %>%
       .format_data()
+
+    if (snake_names) {
+      all_data <-
+        all_data %>%
+        janitor::clean_names()
+    }
+
+    all_data
   }
 
 #' Forebears country data
@@ -505,7 +527,7 @@ fb_last_names <-
 #' @examples
 #' fb_locations(locations = c("China"))
 fb_locations <-
-  function(locations = NULL, return_message = T) {
+  function(locations = NULL, snake_names = F, return_message = T) {
     if (length(locations) == 0) {
       stop("Enter loctations")
     }
@@ -523,6 +545,12 @@ fb_locations <-
       left_join(df_locations, by = "urlForebearsCountry") %>%
       .format_data() %>%
       select(nameCountry, everything())
+
+    if (snake_names) {
+      all_data <-
+        all_data %>%
+        janitor::clean_names()
+    }
 
     all_data
   }

@@ -10,6 +10,7 @@ fb_last_names(
   include_similar_names = F,
   return_message = T,
   nest_data = F,
+  snake_names = F,
   assign_to_environment = T
 )
 }

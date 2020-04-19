@@ -4,7 +4,7 @@
 \alias{fb_locations}
 \title{Forebears country data}
 \usage{
-fb_locations(locations = NULL, return_message = T)
+fb_locations(locations = NULL, snake_names = F, return_message = T)
 }
 \arguments{
 \item{locations}{vector of countries}

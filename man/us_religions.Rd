@@ -4,7 +4,7 @@
 \alias{us_religions}
 \title{Forebears US Religion data}
 \usage{
-us_religions()
+us_religions(snake_names = F)
 }
 \value{
 

@@ -137,6 +137,7 @@ refine_columns <-
                       i = 0.33,
                       s = 1,
                       t = 0.5),
+           snake_names = F,
            ...) {
     if (length(entity_columns) == 0) {
       "No columns"
@@ -159,6 +160,12 @@ refine_columns <-
           ...
         )
       })
+
+    if (snake_names) {
+      data <-
+        data %>%
+        janitor::clean_names()
+    }
 
     data
   }

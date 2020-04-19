@@ -7,6 +7,7 @@
 classify_wru_names(
   data,
   name_columns = NULL,
+  snake_names = F,
   include_probabilities = F,
   include_name_type = T,
   return_message = T

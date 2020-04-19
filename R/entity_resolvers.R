@@ -313,18 +313,18 @@ dictionary_entity_slugs <-
 resolve_data_parties <-
   function(parties = c("LIU, YUAN-CHI", "ASBC LLC"),
            entity_words = NULL,
-           include_ethnicity = T,
            remove_first_last = TRUE,
-           variable = "nameOwnerPrimary") {
-
-
+           variable = "nameOwnerPrimary",
+           snake_names = F
+           ) {
+    options(warn = -1)
     if (length(entity_words) == 0) {
       entity_words <- dictionary_entity_slugs()
     }
     .parse_party_data_safe <-
       purrr::possibly(.parse_party_data, tibble())
 
-    df_parties <-
+    data <-
       parties %>%
       map_dfr(function(party) {
         glue::glue("Resolving: {party}") %>% message()
@@ -336,18 +336,23 @@ resolve_data_parties <-
       dplyr::as_tibble() %>%
       suppressWarnings()
 
-    if (include_ethnicity) {
-      df_parties %>%
-        classify_acris_party_types()
-    }
 
 
     if (remove_first_last) {
-      df_parties <-
-        df_parties %>%
+      data <-
+        data %>%
         dplyr::select(-one_of(c("nameFull", "nameFirst", "nameMiddle", "nameLast"))) %>%
         suppressWarnings()
     }
-    df_parties %>%
+    data <-
+      data %>%
       dplyr::select(which(colMeans(is.na(.)) < 1))
+
+    if (snake_names) {
+      data <-
+        data %>%
+        janitor::clean_names()
+    }
+
+    data
   }

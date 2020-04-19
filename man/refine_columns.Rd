@@ -15,6 +15,7 @@ refine_columns(
   ignore_words = NULL,
   numgram = 2,
   weight = c(d = 0.33, i = 0.33, s = 1, t = 0.5),
+  snake_names = F,
   ...
 )
 }

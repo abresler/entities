@@ -7,9 +7,9 @@
 resolve_data_parties(
   parties = c("LIU, YUAN-CHI", "ASBC LLC"),
   entity_words = NULL,
-  include_ethnicity = T,
   remove_first_last = TRUE,
-  variable = "nameOwnerPrimary"
+  variable = "nameOwnerPrimary",
+  snake_names = F
 )
 }
 \arguments{
