@@ -15,6 +15,7 @@
 #' @param remove_symbols
 #' @param remove_ampersand
 #' @param remove_entity_types
+#' @param custom_regex
 #'
 #' @return
 #' @export
@@ -23,6 +24,7 @@
 clean_text <- function(x,
                        case = NULL,
                        split_characters = NULL,
+                       custom_regex = NULL,
                        remove_bracketed_text = T,
                        remove_digits = F,
                        remove_commas = F,
@@ -55,6 +57,15 @@ clean_text <- function(x,
       x[[length(x)]]
     }) %>%
       str_squish()
+  }
+
+  if (length(custom_regex) > 0 ) {
+    custom_slugs <-
+      glue("\\b{custom_regex}\\b") %>%
+      as.character() %>%
+      str_c(collapse = "|")
+
+    x <- x %>% str_remove_all(custom_slugs) %>% str_squish()
   }
 
   if (remove_bracketed_text) {
@@ -141,6 +152,8 @@ clean_text <- function(x,
 #' @param ...
 #' @param snake_names
 #' @param overwrite_variables
+#' @param custom_regex
+#' @param remove_ampersand
 #'
 #' @return
 #' @export
@@ -153,6 +166,7 @@ tbl_clean_variables <-
            exclude_url_columns = T,
            case = "upper",
            split_characters = NULL,
+           custom_regex = NULL,
            remove_bracketed_text = T,
            remove_digits = F,
            remove_commas = T,
@@ -204,7 +218,10 @@ tbl_clean_variables <-
             remove_kern = remove_kern,
             remove_symbols = remove_symbols,
             fix_comma_space = fix_comma_space,
-            remove_entity_types = remove_entity_types
+            remove_entity_types = remove_entity_types,
+            remove_ampersand = remove_ampersand,
+            custom_regex = custom_regex,
+            ...
           )
         }))
     }
@@ -225,7 +242,10 @@ tbl_clean_variables <-
             remove_kern = remove_kern,
             remove_symbols = remove_symbols,
             fix_comma_space = fix_comma_space,
-            remove_entity_types = remove_entity_types
+            remove_entity_types = remove_entity_types,
+            custom_regex = custom_regex,
+            remove_ampersand = remove_ampersand,
+            ...
           )
         }))
 

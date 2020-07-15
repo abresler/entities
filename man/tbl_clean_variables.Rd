@@ -11,6 +11,7 @@ tbl_clean_variables(
   exclude_url_columns = T,
   case = "upper",
   split_characters = NULL,
+  custom_regex = NULL,
   remove_bracketed_text = T,
   remove_digits = F,
   remove_commas = T,
@@ -28,7 +29,7 @@ tbl_clean_variables(
 )
 }
 \arguments{
-\item{overwrite_variables}{}
+\item{remove_ampersand}{}
 }
 \value{
 

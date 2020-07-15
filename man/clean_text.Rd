@@ -8,6 +8,7 @@ clean_text(
   x,
   case = NULL,
   split_characters = NULL,
+  custom_regex = NULL,
   remove_bracketed_text = T,
   remove_digits = F,
   remove_commas = F,
@@ -23,7 +24,7 @@ clean_text(
 )
 }
 \arguments{
-\item{remove_entity_types}{}
+\item{custom_regex}{}
 }
 \value{
 
