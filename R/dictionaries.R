@@ -14,7 +14,7 @@
 #'
 #' @examples
 dictionary_gleif_entity_types <-
-  memoise::memoise(function() {
+  function() {
     data <-
       "https://www.gleif.org/content/2-about-lei/7-code-lists/2-iso-20275-entity-legal-forms-code-list/2020-06-10_elf-code-list-v1.2.csv" %>%
       read_csv() %>%
@@ -44,7 +44,7 @@ dictionary_gleif_entity_types <-
       )
 
     data
-  })
+  }
 
 
 #' Returns descriptions for countries corporate entity types
@@ -61,7 +61,7 @@ dictionary_gleif_entity_types <-
 #'
 #' @examples
 dictionary_countries_legal_entity_types <-
-  memoise::memoise(function(case = "upper", remove_periods = F) {
+  function(case = "upper", remove_periods = F) {
     page <-
       read_html(
         "https://www.corporateinformation.com/Company-Extensions-Security-Identifiers.aspx"
@@ -79,7 +79,7 @@ dictionary_countries_legal_entity_types <-
       clean_text(case = case)
 
     tibble(code_legal_entity = codes, country = countries, description = descriptions)
-  })
+  }
 
 
 #' Entity Abbreviations
@@ -93,7 +93,7 @@ dictionary_countries_legal_entity_types <-
 #'
 #' @examples
 entity_abbreviations <-
-  memoise::memoise(function(case = "upper", remove_commas = T, remove_periods = T) {
+  function(case = "upper", remove_commas = T, remove_periods = T) {
     slugs <-
       dictionary_gleif_entity_types() %>%
       select(entity_abbreviation) %>%
@@ -122,4 +122,4 @@ entity_abbreviations <-
      as.character()
 
 
-  })
+  }
