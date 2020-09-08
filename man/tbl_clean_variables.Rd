@@ -25,6 +25,7 @@ tbl_clean_variables(
   remove_entity_types = F,
   snake_names = T,
   overwrite_variables = F,
+  keep_entity_type = c("Association"),
   ...
 )
 }

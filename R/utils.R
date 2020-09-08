@@ -36,6 +36,7 @@ clean_text <- function(x,
                        fix_comma_space = T,
                        remove_ampersand = F,
                        remove_entity_types = F,
+                       keep_entity_type = c("Association"),
                        ...) {
   if (class(x) != "character") {
     "Not character" %>% message()
@@ -123,7 +124,16 @@ clean_text <- function(x,
 
   if (remove_entity_types) {
     "Removing entity abbrevitions" %>% message()
-    abbrvs <- entity_abbreviations(case = case, remove_commas = remove_commas, remove_periods = remove_periods) %>% str_c(collapse = "|")
+    abbrvs <- entity_abbreviations(case = case, remove_commas = remove_commas, remove_periods = remove_periods)
+
+    if (length(keep_entity_type) > 0) {
+      abbrvs <-       abbrvs %>%
+        discard(function(x) {
+          x %>% str_to_upper() %>% str_detect(str_to_upper(keep_entity_type))
+        })
+    }
+
+    abbrvs <- abbrvs %>% str_c(collapse = "|")
     x <- x %>% str_remove_all(pattern = abbrvs) %>% str_squish()
   }
 
@@ -180,6 +190,7 @@ tbl_clean_variables <-
            remove_entity_types = F,
            snake_names = T,
            overwrite_variables = F,
+           keep_entity_type = c("Association"),
            ...
   ) {
     if (all_character_columns) {
@@ -221,6 +232,7 @@ tbl_clean_variables <-
             remove_entity_types = remove_entity_types,
             remove_ampersand = remove_ampersand,
             custom_regex = custom_regex,
+            keep_entity_type = keep_entity_type,
             ...
           )
         }))
@@ -245,6 +257,7 @@ tbl_clean_variables <-
             remove_entity_types = remove_entity_types,
             custom_regex = custom_regex,
             remove_ampersand = remove_ampersand,
+            keep_entity_type = keep_entity_type,
             ...
           )
         }))

@@ -20,6 +20,7 @@ clean_text(
   fix_comma_space = T,
   remove_ampersand = F,
   remove_entity_types = F,
+  keep_entity_type = c("Association"),
   ...
 )
 }
