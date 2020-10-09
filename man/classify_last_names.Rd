@@ -28,5 +28,5 @@ classify_last_names(
 Classify a vectore last names using the WRU model
 }
 \examples{
-classify_last_names(last_names = c("Jackson", "Cheng", "Wen"), include_probabilities = F)
+
 }

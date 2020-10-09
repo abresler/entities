@@ -105,8 +105,6 @@
     rm(data)
     gc()
 
-    BRRR::skrrrahh(sound = 1:500 %>% sample(1))
-
     glue::glue("Finished re-resolving {document} in {borough}") %>% message()
 
     if (getwd() != old_wd) {

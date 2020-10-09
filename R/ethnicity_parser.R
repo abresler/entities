@@ -52,7 +52,7 @@
 #' @export
 #' @import wru
 #' @examples
-#' classify_last_names(last_names = c("Jackson", "Cheng", "Wen"), include_probabilities = F)
+#'
 classify_last_names <-
   function(last_names = c("Jackson", "Cheng", "Wen"),
            include_probabilities = F,
