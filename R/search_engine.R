@@ -81,10 +81,14 @@
       words %>%
       map_dfr(function(word){
         if (return_message) {
-          glue::glue("Building query for {word}") %>% message()
+          glue::glue("Building query for {word}") %>%
+            as.character() %>%
+            message()
+        }
+
           urlDDG <- .ddg(word = word, quote = quote, additional_terms = additional_terms)
           tibble(termSearch = word, urlDDG)
-        }
+
       })
 
     all_data
@@ -110,10 +114,12 @@
       words %>%
       map_dfr(function(word){
         if (return_message) {
-          glue::glue("Building query for {word}") %>% message()
+          glue::glue("Building query for {word}") %>%
+            as.character() %>%
+            message()
+        }
           urlGoogle <- .google(word = word, quote = quote, additional_terms = additional_terms)
           tibble(termSearch = word, urlGoogle)
-        }
       })
 
     all_data
@@ -139,10 +145,12 @@
       words %>%
       map_dfr(function(word){
         if (return_message) {
-          glue::glue("Building query for {word}") %>% message()
+          glue::glue("Building query for {word}") %>%
+            as.character() %>%
+            message()
+        }
           urlStartPage <- .startpage(word = word, quote = quote, additional_terms = additional_terms)
           tibble(termSearch = word, urlStartPage)
-        }
       })
 
     all_data
@@ -168,10 +176,12 @@
       words %>%
       map_dfr(function(word){
         if (return_message) {
-          glue::glue("Building query for {word}") %>% message()
+          glue::glue("Building query for {word}") %>%
+            as.character() %>%
+            message()
+        }
           urlYandex <- .yandex(word = word, quote = quote, additional_terms = additional_terms)
           tibble(termSearch = word, urlYandex)
-        }
       })
 
     all_data
@@ -198,10 +208,12 @@
       words %>%
       map_dfr(function(word){
         if (return_message) {
-          glue::glue("Building query for {word}") %>% message()
+          glue::glue("Building query for {word}") %>%
+            as.character() %>%
+            message()
+        }
           urlBaidu <- .baidu(word = word, quote = quote, additional_terms = additional_terms)
           tibble(termSearch = word, urlBaidu)
-        }
       })
 
     all_data
@@ -268,7 +280,7 @@ query_words <-
         }
       })
 
-    all_data <- all_data %>% purrr::reduce(left_join) %>% suppressMessages()
+    all_data <- all_data %>% purrr::reduce(left_join, by = "termSearch")
 
     if (length(rename_output) > 0) {
       all_data <-
