@@ -20,7 +20,9 @@
     if (!data %>% hasName(entity_column)) {
       return(data)
     }
-    glue::glue("Cleaning {entity_column}") %>% message()
+    glue::glue("Cleaning {entity_column}") %>%
+      as.character() %>%
+      message()
 
 
     data <-

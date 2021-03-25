@@ -203,7 +203,9 @@ dictionary_fb_regions <-
     if (return_message) {
       ln <-
         url %>% str_remove_all("https://forebears.io/surnames/") %>% URLdecode() %>% str_to_upper()
-      glue::glue("Acquiring data about last name {ln}") %>% message()
+      glue::glue("Acquiring data about last name {ln}") %>%
+        as.character() %>%
+        message()
     }
     page <-
       read_html(x = url)

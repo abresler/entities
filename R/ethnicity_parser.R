@@ -4,7 +4,9 @@
            include_probabilities = F) {
     library(wru)
     if (return_message) {
-      glue("Classifying {last_name}") %>% message()
+      glue("Classifying {last_name}") %>%
+        as.character() %>%
+        message()
     }
     data <- tibble(surname = last_name)
     df <- wru::predict_race(data, surname.only = T)
@@ -25,7 +27,7 @@
       df %>% filter(prob == max(prob)) %>% pull(race) %>% .[[1]]
 
     if (return_message) {
-      glue("{last_name} is likely {prediction}") %>% message()
+      as.character(glue("{last_name} is likely {prediction}")) %>% message()
     }
 
     data <-
@@ -109,7 +111,8 @@ classify_last_names <-
       classify_last_names(
         last_names = last_names,
         include_probabilities = include_probabilities,
-        last_name_column = last_name_column
+        last_name_column = last_name_column,
+        return_message = return_message
       )
 
     data <-
@@ -138,7 +141,8 @@ tbl_last_name <-
            name_column = "namePrincipalInvestigator",
            include_name_type = F,
            snake_names = F,
-           return_only_names = F) {
+           return_only_names = F
+           ) {
     if (length(name_column) == 0) {
       stop("Enter name column")
     }
