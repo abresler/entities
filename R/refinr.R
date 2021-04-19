@@ -20,7 +20,7 @@
     if (!data %>% hasName(entity_column)) {
       return(data)
     }
-    glue::glue("Cleaning {entity_column}") %>%
+    glue("Cleaning {entity_column}") %>%
       as.character() %>%
       message()
 
@@ -30,7 +30,7 @@
       mutate_if(is.character, str_trim)
 
     new_col <-
-      glue::glue("{entity_column}Clean") %>% as.character()
+      glue("{entity_column}Clean") %>% as.character()
 
     x <-
       (data %>% pull(entity_column)) %>% str_to_upper() %>% str_trim() %>%
@@ -43,17 +43,17 @@
 
       x <-
         x %>%
-        refinr::key_collision_merge(ignore_strings = ignores, bus_suffix = use_business_suffix)
+        key_collision_merge(ignore_strings = ignores, bus_suffix = use_business_suffix)
     } else {
       x <-
         x %>%
-        refinr::key_collision_merge(bus_suffix = use_business_suffix)
+        key_collision_merge(bus_suffix = use_business_suffix)
     }
 
 
     if (use_n_gram_merge) {
       x <-
-        refinr::n_gram_merge(
+        n_gram_merge(
           vect = x,
           ignore_strings = ignore_words,
           edit_threshold = edit_threshold,
@@ -76,14 +76,14 @@
       if ("soundex" %in% phonics_methods) {
         data <-
           data %>%
-          mutate(UQ(glue::glue("slugSoundex{part}")) := x %>% phonics::soundex(maxCodeLen = phonics_length, clean = F))
+          mutate(UQ(glue("slugSoundex{part}")) := x %>% soundex(maxCodeLen = phonics_length, clean = F))
       }
 
       if ("caverphone" %in% phonics_methods) {
         data <-
           data %>%
           mutate(
-            UQ(glue::glue("slugCaverphone{part}")) := x %>% phonics::caverphone(maxCodeLen = phonics_length, clean = F)
+            UQ(glue("slugCaverphone{part}")) := x %>% caverphone(maxCodeLen = phonics_length, clean = F)
           )
       }
 
@@ -91,13 +91,13 @@
         data <-
           data %>%
           mutate(
-            UQ(glue::glue("slugNYSIIS{part}")) := x %>% nysiis(maxCodeLen = phonics_length, clean = F)
+            UQ(glue("slugNYSIIS{part}")) := x %>% nysiis(maxCodeLen = phonics_length, clean = F)
           )
       }
       if ("metaphone" %in% phonics_methods) {
         data <-
           data %>%
-          mutate(UQ(glue::glue("slugMetaphone{part}")) := x %>% metaphone(maxCodeLen = phonics_length, clean = F))
+          mutate(UQ(glue("slugMetaphone{part}")) := x %>% metaphone(maxCodeLen = phonics_length, clean = F))
       }
     }
 
@@ -166,7 +166,7 @@ refine_columns <-
     if (snake_names) {
       data <-
         data %>%
-        janitor::clean_names()
+        clean_names()
     }
 
     data

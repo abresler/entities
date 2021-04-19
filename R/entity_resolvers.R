@@ -115,7 +115,7 @@ dictionary_entity_slugs <-
         "BRD OF MGRS", "AUTHORITY", "^UNIT ",
         "ventures", "wealth", "worldwide", "yeshiva", "EQUITSGRP", " SEVENTY ") %>%
       unique() %>%
-      stringr::str_to_lower() %>%
+      str_to_lower() %>%
       sort()
 
     countries <-
@@ -126,7 +126,7 @@ dictionary_entity_slugs <-
       str_to_lower()
 
     countries <-
-      glue::glue(" {countries} ") %>% as.character()
+      glue(" {countries} ") %>% as.character()
 
 
     continents <-
@@ -137,12 +137,12 @@ dictionary_entity_slugs <-
       unique()
 
     continents <-
-      glue::glue(" {continents} ") %>% as.character()
+      glue(" {continents} ") %>% as.character()
 
     entities <- c(state.name, countries, continents)
 
     all <-
-      words %>% append(entities) %>% stringr::str_to_lower()
+      words %>% append(entities) %>% str_to_lower()
     all
   }
 
@@ -156,16 +156,16 @@ dictionary_entity_slugs <-
     is_reversed_name <-
       (
         person_name %>% str_count("\\,") >= 1 &&
-          humaniformat::suffix(x = person_name) %>% is.na()
+          suffix(x = person_name) %>% is.na()
       ) |
       (
         person_name %>% str_count("\\,") >= 1 &&
-          humaniformat::salutation(x = person_name) %>% is.na()
+          salutation(x = person_name) %>% is.na()
       )
 
 
     if (is_reversed_name) {
-      person_name <- person_name %>% humaniformat::format_reverse()
+      person_name <- person_name %>% format_reverse()
     }
 
 
@@ -177,10 +177,10 @@ dictionary_entity_slugs <-
 
     if (is_period) {
       person_name <-
-        person_name %>% humaniformat::format_period()
+        person_name %>% format_period()
     }
 
-    df_person <- person_name %>% humaniformat::parse_names()
+    df_person <- person_name %>% parse_names()
 
     df_names <- .dictionary.person_names()
 
@@ -192,8 +192,8 @@ dictionary_entity_slugs <-
       })
 
     df_person %>%
-      purrr::set_names(c(actual_names)) %>%
-      dplyr::select(which(colMeans(is.na(.)) < 1))
+      set_names(c(actual_names)) %>%
+      remove_empty(which = "cols")
   }
 
 .parse_party_data <-
@@ -246,8 +246,8 @@ dictionary_entity_slugs <-
       str_c(is_variable %>% substr(2, nchar(is_variable)))
 
     is_var <-
-      glue::glue("is{is_variable}Entity") %>%  as.character()
-    new_var <- glue::glue("{variable}Resolved") %>% as.character()
+      glue("is{is_variable}Entity") %>%  as.character()
+    new_var <- glue("{variable}Resolved") %>% as.character()
     isEstate <- party %>% str_detect("ESTATE|AS TRUSTEE")
 
     if (has_comma && party_length %in% c(2,3) && not_entity) {
@@ -322,18 +322,18 @@ resolve_data_parties <-
       entity_words <- dictionary_entity_slugs()
     }
     .parse_party_data_safe <-
-      purrr::possibly(.parse_party_data, tibble())
+      possibly(.parse_party_data, tibble())
 
     data <-
       parties %>%
       map_dfr(function(party) {
-        glue::glue("Resolving: {party}") %>% message()
+        glue("Resolving: {party}") %>% message()
         .parse_party_data_safe(party = party,
                                entity_words = entity_words,
                                variable = variable)
       }) %>%
       dplyr::select(dplyr::matches("is[A-Z]"), dplyr::matches(variable), everything()) %>%
-      dplyr::as_tibble() %>%
+      as_tibble() %>%
       suppressWarnings()
 
 
@@ -346,12 +346,12 @@ resolve_data_parties <-
     }
     data <-
       data %>%
-      dplyr::select(which(colMeans(is.na(.)) < 1))
+      remove_empty(which = "cols")
 
     if (snake_names) {
       data <-
         data %>%
-        janitor::clean_names()
+        clean_names()
     }
 
     data

@@ -312,7 +312,7 @@ tbl_fuzzy_join <-
            index_match_fun = NULL,
            mode = "inner",
            ...) {
-    fuzzyjoin::fuzzy_join(
+    fuzzy_join(
       x = x,
       y = y,
       by =  by,
@@ -466,8 +466,8 @@ tbl_geo_join <-
     data <-
       data %>%
       filter(!is.na(!!sym(variable))) %>%
-      tidystringdist::tidy_comb_all(!!sym(variable)) %>%
-      tidystringdist::tidy_stringdist(method = method, ...) %>%
+      tidy_comb_all(!!sym(variable)) %>%
+      tidy_stringdist(method = method, ...) %>%
       mutate(variable) %>%
       select(variable, everything())
 
@@ -487,8 +487,8 @@ tbl_geo_join <-
     }
 
     if (clean_names) {
-      v1 <- glue::glue("{variable}") %>% as.character()
-      v2 <- glue::glue("{variable}_match") %>% as.character()
+      v1 <- glue("{variable}") %>% as.character()
+      v2 <- glue("{variable}_match") %>% as.character()
       data <-
         data %>%
         rename(UQ(v1) := V1,

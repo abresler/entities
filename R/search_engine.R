@@ -1,13 +1,13 @@
 .search_slug <- function(word = "AJAY D KAMDAR", quote = T, additional_terms = NULL) {
   if (quote){
-    slug <- glue::glue('"{word}"') %>% URLencode()
+    slug <- glue('"{word}"') %>% URLencode()
   } else {
     slug <- URLencode(word)
   }
 
   if (length(additional_terms) > 0) {
     a_slug <- URLencode(additional_terms)
-    slug <- glue::glue("{slug}+{a_slug}") %>% as.character()
+    slug <- glue("{slug}+{a_slug}") %>% as.character()
   }
   as.character(slug)
 }
@@ -16,7 +16,7 @@
   function(word = "WENCUI ZHAO", quote = T, additional_terms = NULL) {
     base <- "https://duckduckgo.com/?q="
     slug <- .search_slug(word = word, quote = T, additional_terms = additional_terms)
-    url <- glue::glue("{base}{slug}&ia=web") %>% as.character()
+    url <- glue("{base}{slug}&ia=web") %>% as.character()
     url
   }
 
@@ -24,7 +24,7 @@
   function(word = "WENCUI ZHAO", quote = T, additional_terms = NULL) {
     base <- "https://bing.com/search?q="
     slug <- .search_slug(word = word, quote = T, additional_terms = additional_terms)
-    url <- glue::glue("{base}{slug}") %>% as.character()
+    url <- glue("{base}{slug}") %>% as.character()
     url
   }
 
@@ -32,7 +32,7 @@
   function(word = "WENCUI ZHAO", quote = T, additional_terms = NULL) {
     base <- "https://yandex.ru/search/?text="
     slug <- .search_slug(word = word, quote = T, additional_terms = additional_terms)
-    url <- glue::glue("{base}{slug}&lr=213") %>% as.character()
+    url <- glue("{base}{slug}&lr=213") %>% as.character()
     url
   }
 
@@ -40,7 +40,7 @@
   function(word = "WENCUI ZHAO", quote = T, additional_terms = NULL) {
     base <- "https://www.baidu.com/s?wd="
     slug <- .search_slug(word = word, quote = T, additional_terms = additional_terms)
-    url <- glue::glue("{base}{slug}&lr=213") %>% as.character()
+    url <- glue("{base}{slug}&lr=213") %>% as.character()
     url
   }
 
@@ -48,7 +48,7 @@
   function(word = "WENCUI ZHAO", quote = T, additional_terms = NULL) {
     base <- "https://www.google.com/search?q="
     slug <- .search_slug(word = word, quote = T, additional_terms = additional_terms)
-    url <- glue::glue("{base}{slug}") %>% as.character()
+    url <- glue("{base}{slug}") %>% as.character()
     url
   }
 
@@ -56,7 +56,7 @@
   function(word = "WENCUI ZHAO", quote = T, additional_terms = NULL) {
     base <- "https://ixquick.com/do/dsearch?query="
     slug <- .search_slug(word = word, quote = T, additional_terms = additional_terms)
-    url <- glue::glue("{base}{slug}") %>% as.character()
+    url <- glue("{base}{slug}") %>% as.character()
     url
   }
 
@@ -81,7 +81,7 @@
       words %>%
       map_dfr(function(word){
         if (return_message) {
-          glue::glue("Building query for {word}") %>%
+          glue("Building query for {word}") %>%
             as.character() %>%
             message()
         }
@@ -114,7 +114,7 @@
       words %>%
       map_dfr(function(word){
         if (return_message) {
-          glue::glue("Building query for {word}") %>%
+          glue("Building query for {word}") %>%
             as.character() %>%
             message()
         }
@@ -145,7 +145,7 @@
       words %>%
       map_dfr(function(word){
         if (return_message) {
-          glue::glue("Building query for {word}") %>%
+          glue("Building query for {word}") %>%
             as.character() %>%
             message()
         }
@@ -176,7 +176,7 @@
       words %>%
       map_dfr(function(word){
         if (return_message) {
-          glue::glue("Building query for {word}") %>%
+          glue("Building query for {word}") %>%
             as.character() %>%
             message()
         }
@@ -208,7 +208,7 @@
       words %>%
       map_dfr(function(word){
         if (return_message) {
-          glue::glue("Building query for {word}") %>%
+          glue("Building query for {word}") %>%
             as.character() %>%
             message()
         }
@@ -280,7 +280,7 @@ query_words <-
         }
       })
 
-    all_data <- all_data %>% purrr::reduce(left_join, by = "termSearch")
+    all_data <- all_data %>% reduce(left_join, by = "termSearch")
 
     if (length(rename_output) > 0) {
       all_data <-

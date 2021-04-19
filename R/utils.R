@@ -70,7 +70,7 @@ clean_text <- function(x,
   }
 
   if (remove_bracketed_text) {
-    x <- x %>% qdap::bracketX()
+    x <- x %>% bracketX()
   }
 
   if (length(case) > 0) {
@@ -88,7 +88,7 @@ clean_text <- function(x,
 
   if (remove_symbols) {
     x <-
-      x %>% qdap::replace_symbol()
+      x %>% replace_symbol()
   }
 
   if (remove_dash) {
@@ -98,7 +98,7 @@ clean_text <- function(x,
 
   if (fix_comma_space) {
     x <-
-      x %>% textclean::add_comma_space()
+      x %>% add_comma_space()
   }
 
   if (remove_html) {
@@ -274,7 +274,7 @@ tbl_clean_variables <-
     if (snake_names) {
       data <-
         data %>%
-        janitor::clean_names()
+        clean_names()
     }
 
     data

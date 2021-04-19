@@ -6,7 +6,7 @@
 #' @examples
 #' dictionary_fb_countries()
 dictionary_fb_countries <-
-  memoise::memoise(function() {
+  function() {
     data <-
       "https://forebears.io/assets/geoJSON/454481.Nations.json" %>%
       fromJSON(simplifyDataFrame = T)
@@ -20,7 +20,7 @@ dictionary_fb_countries <-
       mutate(idCountry = ids) %>%
       select(idCountry, everything())
     data
-  })
+  }
 
 .parse_region_json <-
   function(url = "https://forebears.io/assets/geoJSON/17092.Regions.json") {
@@ -62,7 +62,7 @@ dictionary_fb_regions <-
         data %>%
         mutate_at(count_cols,
                   list(function(x) {
-                    x %>% as.character() %>% readr::parse_number() %>% formattable::comma(digits = 0)
+                    x %>% as.character() %>% parse_number() %>% comma(digits = 0)
                   }))
     }
 
@@ -71,7 +71,7 @@ dictionary_fb_regions <-
         data %>%
         mutate_at(percent_cols,
                   list(function(x) {
-                    x %>% as.character() %>% readr::parse_number() %>% formattable::percent(digits = 8)
+                    x %>% as.character() %>% parse_number() %>% percent(digits = 8)
                   }))
     }
 
@@ -89,7 +89,7 @@ dictionary_fb_regions <-
       URLencode() %>%
       str_replace_all("\\'", "%60") %>%
       str_to_lower()
-    glue::glue("https://forebears.io/surnames/{slug}") %>% as.character()
+    glue("https://forebears.io/surnames/{slug}") %>% as.character()
   }
 
 .fb_name_urls <-
@@ -126,7 +126,7 @@ dictionary_fb_regions <-
 }
 
 .world_pop <- function(page) {
-  page %>% html_nodes("b") %>% html_text() %>% .[[1]] %>% readr::parse_number()
+  page %>% html_nodes("b") %>% html_text() %>% .[[1]] %>% parse_number()
 }
 
 .world_prevelence <-
@@ -143,7 +143,7 @@ dictionary_fb_regions <-
 .parse_meaning <-
   function(page) {
     page %>% html_nodes(".text-justify p") %>% html_text() %>% unique() %>% str_c(collapse = ", ") %>%
-      stringi::stri_encode("UTF8")
+      stri_encode("UTF8")
   }
 
 .parse_table_similar <-
@@ -203,7 +203,7 @@ dictionary_fb_regions <-
     if (return_message) {
       ln <-
         url %>% str_remove_all("https://forebears.io/surnames/") %>% URLdecode() %>% str_to_upper()
-      glue::glue("Acquiring data about last name {ln}") %>%
+      glue("Acquiring data about last name {ln}") %>%
         as.character() %>%
         message()
     }
@@ -221,11 +221,11 @@ dictionary_fb_regions <-
     world_pop <- .world_pop_safe(page = page)
     df_prev <-
       .world_prevelence_safe(page = page) %>%
-      janitor::remove_empty(which = "cols")
+      remove_empty(which = "cols")
     meaning <- .parse_meaning_safe(page = page)
     df_countries <-
       .parse_table_country_safe(page = page) %>%
-      janitor::remove_empty(which = "cols")
+      remove_empty(which = "cols")
 
     if (include_similar_names) {
       df_similar <- .parse_table_similar_safe(page = page)
@@ -259,7 +259,7 @@ dictionary_fb_regions <-
   function(country = c("New Zealand")) {
     slug <- country %>% str_to_lower() %>% str_replace_all("\\ ", "\\-")
     url <-
-      glue::glue("https://forebears.io/{slug}") %>% as.character()
+      glue("https://forebears.io/{slug}") %>% as.character()
     url
   }
 
@@ -273,12 +273,12 @@ dictionary_fb_regions <-
   }
 
 .parse_country_url <-
-  memoise::memoise(function(url = "https://forebears.io/taiwan",
+  function(url = "https://forebears.io/taiwan",
                             return_message = T) {
     if (return_message) {
       ln <- url %>%
         str_remove_all("https://forebears.io/") %>% URLdecode() %>% str_to_upper()
-      glue::glue("Acquiring data about popular names in {ln}") %>% message()
+      glue("Acquiring data about popular names in {ln}") %>% message()
     }
     page <- url %>% read_html()
     yearData <-
@@ -310,7 +310,7 @@ dictionary_fb_regions <-
       mutate(urlForebearsCountry = url)
 
     data
-  })
+  }
 
 # functions ---------------------------------------------------------------
 
@@ -322,7 +322,7 @@ dictionary_fb_regions <-
 #' @examples
 #' us_political_affiliation()
 us_political_affiliation <-
-  memoise::memoise(function(snake_names = F) {
+  function(snake_names = F) {
     page <-
       "https://forebears.io/united-states/demographics/political-affiliation-surname" %>%
       read_html()
@@ -380,12 +380,12 @@ us_political_affiliation <-
     if (snake_names) {
       data <-
         data %>%
-        janitor::clean_names()
+        clean_names()
     }
 
     data
 
-  })
+  }
 
 #' Forebears US Religion data
 #'
@@ -395,7 +395,7 @@ us_political_affiliation <-
 #' @examples
 #' us_religions()
 us_religions <-
-  memoise::memoise(function(snake_names = F) {
+  function(snake_names = F) {
     page <-
       "https://forebears.io/united-states/demographics/religion-surname" %>%
       read_html()
@@ -445,12 +445,12 @@ us_religions <-
     if (snake_names) {
       data <-
         data %>%
-        janitor::clean_names()
+        clean_names()
     }
 
     data
 
-  })
+  }
 
 #' Forebears last name data
 #'
@@ -513,7 +513,7 @@ fb_last_names <-
       data_names %>%
         walk(function(data_name) {
           base_names <- all_data %>% select(-matches("data")) %>% names()
-          glue::glue("Assigning {data_name} to environment") %>% message()
+          glue("Assigning {data_name} to environment") %>% message()
           table_name <-
             case_when(data_name == "dataCountryPopularity" ~ "df_popularity",
                       TRUE ~ "df_similar")
@@ -542,7 +542,7 @@ fb_last_names <-
     if (snake_names) {
       all_data <-
         all_data %>%
-        janitor::clean_names()
+        clean_names()
     }
 
     all_data
@@ -584,7 +584,7 @@ fb_locations <-
     if (snake_names) {
       all_data <-
         all_data %>%
-        janitor::clean_names()
+        clean_names()
     }
 
     all_data

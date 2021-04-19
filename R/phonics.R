@@ -14,24 +14,24 @@
   if ("soundex" %in% phonics_methods) {
     data <-
       data %>%
-      mutate(UQ(glue::glue("slugSoundex{part}")) := x %>% phonics::soundex(maxCodeLen = phonics_length, clean = F))
+      mutate(UQ(glue("slugSoundex{part}")) := x %>% phonics::soundex(maxCodeLen = phonics_length, clean = F))
   }
 
   if ("caverphone" %in% phonics_methods) {
     data <-
       data %>%
-      mutate(UQ(glue::glue("slugCaverphone{part}")) := x %>% phonics::caverphone(maxCodeLen = phonics_length, clean = F))
+      mutate(UQ(glue("slugCaverphone{part}")) := x %>% phonics::caverphone(maxCodeLen = phonics_length, clean = F))
   }
 
   if ("nysiis" %in% phonics_methods) {
     data <-
       data %>%
-      mutate(UQ(glue::glue("slugNYSIIS{part}")) := x %>% phonics::nysiis(maxCodeLen = phonics_length, clean = F))
+      mutate(UQ(glue("slugNYSIIS{part}")) := x %>% phonics::nysiis(maxCodeLen = phonics_length, clean = F))
   }
   if ("metaphone" %in% phonics_methods) {
     data <-
       data %>%
-      mutate(UQ(glue::glue("slugMetaphone{part}")) := x %>% phonics::metaphone(maxCodeLen = phonics_length, clean = F))
+      mutate(UQ(glue("slugMetaphone{part}")) := x %>% phonics::metaphone(maxCodeLen = phonics_length, clean = F))
   }
 
   data

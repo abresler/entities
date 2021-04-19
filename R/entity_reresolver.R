@@ -9,7 +9,7 @@
       select(idDocument, dataParties) %>%
       unnest()
 
-    if (df_parties %>% tibble::has_name("nameEntityParty")) {
+    if (df_parties %>% has_name("nameEntityParty")) {
       df_parties <-
         df_parties %>%
         mutate(nameParty = ifelse(is.na(nameParty), nameEntityParty, nameParty))
@@ -65,12 +65,12 @@
     borough_slugs <-
       borough %>% str_to_lower() %>% str_replace_all("\\ ", "\\_")
     path <-
-      glue::glue("{base_path}{doc_slugs}/{borough_slugs}/") %>% as.character()
+      glue("{base_path}{doc_slugs}/{borough_slugs}/") %>% as.character()
 
     setwd(path)
 
     files <- list.files()
-    glue::glue("Re-resolving parties in {borough} for {document}") %>% message()
+    glue("Re-resolving parties in {borough} for {document}") %>% message()
     if (length(files) == 0) {
       if (getwd() != old_wd) {
         setwd(old_wd)
@@ -81,7 +81,7 @@
     data <-
       files %>%
       map_dfr(function(file) {
-        glue::glue("Reading {file}") %>% message()
+        glue("Reading {file}") %>% message()
         file %>% read_rda_file() %>%
           mutate(slugFile = file) %>%
           select(slugFile, everything())
@@ -95,7 +95,7 @@
 
     files %>%
       walk(function(file){
-        glue::glue("Saving {file}") %>% message()
+        glue("Saving {file}") %>% message()
         data %>%
           filter(slugFile == file) %>%
           select(-slugFile) %>%
@@ -105,7 +105,7 @@
     rm(data)
     gc()
 
-    glue::glue("Finished re-resolving {document} in {borough}") %>% message()
+    glue("Finished re-resolving {document} in {borough}") %>% message()
 
     if (getwd() != old_wd) {
       setwd(old_wd)

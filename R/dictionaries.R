@@ -18,7 +18,7 @@ dictionary_gleif_entity_types <-
     data <-
       "https://www.gleif.org/content/2-about-lei/7-code-lists/2-iso-20275-entity-legal-forms-code-list/2020-06-10_elf-code-list-v1.2.csv" %>%
       read_csv() %>%
-      janitor::clean_names()
+      clean_names()
 
     data <-
       data %>%

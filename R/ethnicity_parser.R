@@ -9,7 +9,7 @@
         message()
     }
     data <- tibble(surname = last_name)
-    df <- wru::predict_race(data, surname.only = T)
+    df <- predict_race(data, surname.only = T)
 
     df <-
       as_tibble(df) %>% gather(race, prob, -surname) %>%
@@ -82,7 +82,7 @@ classify_last_names <-
 
     if (snake_names) {
       all_data <- all_data %>%
-        janitor::clean_names()
+        clean_names()
     }
 
     all_data
@@ -150,7 +150,7 @@ tbl_last_name <-
     all_names <- data %>% pull(name_column) %>% unique()
 
     df_names <-
-      humaniformat::parse_names(names = all_names) %>%
+      parse_names(names = all_names) %>%
       as_tibble() %>%
       setNames(c(
         "salutation",
@@ -193,7 +193,7 @@ tbl_last_name <-
 
     if (snake_names) {
       data <- data %>%
-        janitor::clean_names()
+        clean_names()
     }
 
     data
@@ -341,7 +341,7 @@ classify_wru_names <-
 
     if (snake_names) {
       data <- data %>%
-        janitor::clean_names()
+        clean_names()
     }
     data
   }
