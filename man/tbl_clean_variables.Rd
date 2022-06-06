@@ -32,9 +32,6 @@ tbl_clean_variables(
 \arguments{
 \item{remove_ampersand}{}
 }
-\value{
-
-}
 \description{
 Clean Variables
 }

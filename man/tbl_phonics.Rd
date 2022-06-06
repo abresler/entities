@@ -14,9 +14,6 @@ tbl_phonics(
 \arguments{
 \item{phonics_length}{}
 }
-\value{
-
-}
 \description{
 Append phonics methods to a tbl
 }

@@ -27,9 +27,6 @@ clean_text(
 \arguments{
 \item{custom_regex}{}
 }
-\value{
-
-}
 \description{
 Clean Text
 }

@@ -9,16 +9,16 @@
 #'
 #' Dictionary of GLEIF entities
 #'
+#' @param url url with most recent CSV
+#'
 #' @return
 #' @export
 #'
 #' @examples
 dictionary_gleif_entity_types <-
-  function() {
+  memoise::memoise(function(url = "https://www.gleif.org/media/pages/about-lei/code-lists/iso-20275-entity-legal-forms-code-list/70ffe8dcfc-1654157922/2021-10-21-elf-code-list-v1.4.1.csv") {
     data <-
-      "https://www.gleif.org/content/2-about-lei/7-code-lists/2-iso-20275-entity-legal-forms-code-list/2020-06-10_elf-code-list-v1.2.csv" %>%
-      read_csv() %>%
-      clean_names()
+      read_csv(url) |> janitor::clean_names()
 
     data <-
       data %>%
@@ -44,7 +44,7 @@ dictionary_gleif_entity_types <-
       )
 
     data
-  }
+  })
 
 
 #' Returns descriptions for countries corporate entity types

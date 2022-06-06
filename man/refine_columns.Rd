@@ -22,9 +22,6 @@ refine_columns(
 \arguments{
 \item{...}{}
 }
-\value{
-
-}
 \description{
 Refine entity columns
 }

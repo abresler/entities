@@ -9,9 +9,6 @@ entity_abbreviations(case = "upper", remove_commas = T, remove_periods = T)
 \arguments{
 \item{remove_periods}{}
 }
-\value{
-
-}
 \description{
 Entity Abbreviations
 }

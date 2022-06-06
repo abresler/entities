@@ -11,9 +11,6 @@ fb_locations(locations = NULL, snake_names = F, return_message = T)
 
 \item{return_message}{if \code{TRUE} returns message}
 }
-\value{
-
-}
 \description{
 Forebears country data
 }

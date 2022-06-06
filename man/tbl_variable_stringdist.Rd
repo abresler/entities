@@ -2,7 +2,7 @@
 % Please edit documentation in R/fuzzyjoins.R
 \name{tbl_variable_stringdist}
 \alias{tbl_variable_stringdist}
-\title{Variable String Distance}
+\title{Tidy String Distance Calculation from Variable}
 \usage{
 tbl_variable_stringdist(
   data,
@@ -15,11 +15,25 @@ tbl_variable_stringdist(
 )
 }
 \arguments{
-\item{...}{}
-}
-\value{
+\item{data}{a `tibble`}
 
+\item{variables}{vector of varibles to caluclate distance}
+
+\item{method}{method    one of the methods implemented in the stringdist package — "osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw", "soundex". See stringdist-metrics}
+
+\item{clean_names}{if `TRUE` clean names}
+
+\item{return_wide}{if `TRUE` widen long data}
+
+\item{...}{other parameters passed to stringdist}
 }
 \description{
-Variable String Distance
+Calculate tidy string distance for a set of variables
+}
+\examples{
+library(entities)
+tbl_proust <- tibble(person = c("Albertine", "Françoise", "Gilberte", "Odette", "Charles"))
+tbl_variable_stringdist(data = tbl_proust, variables = "person")
+tbl_variable_stringdist(ggplot2::diamonds, variable = "cut")
+
 }

@@ -2,8 +2,7 @@
 % Please edit documentation in R/fuzzyjoins.R
 \name{tbl_distance_join}
 \alias{tbl_distance_join}
-\title{Join two tables based on a distance metric of one or more columns
-This differs from difference_join in that it considers all of the columns together when computing distance. This allows it to use metrics such as Euclidean or Manhattan that depend on multiple columns. Note that if you are computing with longitude or latitude, you probably want to use geo_join.}
+\title{Join two tables based on a distance metric of one or more columns}
 \usage{
 tbl_distance_join(
   x,
@@ -31,9 +30,20 @@ tbl_distance_join(
 \item{distance_col}{If given, will add a column with this name containing the distance between the two}
 }
 \value{
-
+`tibble`
 }
 \description{
-Join two tables based on a distance metric of one or more columns
 This differs from difference_join in that it considers all of the columns together when computing distance. This allows it to use metrics such as Euclidean or Manhattan that depend on multiple columns. Note that if you are computing with longitude or latitude, you probably want to use geo_join.
+}
+\examples{
+library(dplyr)
+library(entities)
+head(iris)
+sepal_lengths <- data_frame(Sepal.Length = c(5, 6, 7),
+Sepal.Width = 1:3)
+
+iris |>
+tbl_distance_join(sepal_lengths, mode = "inner", max_dist = 2)
+
+
 }

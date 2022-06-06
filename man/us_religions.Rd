@@ -6,9 +6,6 @@
 \usage{
 us_religions(snake_names = F)
 }
-\value{
-
-}
 \description{
 Forebears US Religion data
 }

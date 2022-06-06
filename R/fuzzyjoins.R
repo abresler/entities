@@ -1,27 +1,37 @@
 
 
-
-
-
-
-
-
-
-
 # regex -------------------------------------------------------------------
 
 #' Regex Join
 #'
-#' @param x
-#' @param y
-#' @param by
-#' @param mode
-#' @param ignore_case
+#' Join a table with a string column by a regular expression column in another table
 #'
-#' @return
+#' @param x `tbl` X
+#' @param y `tbl Y`
+#' @param by Columns of each to join
+#' @param mode One of "inner", "left", "right", "full" "semi", or "anti"
+#' @param ignore_case Whether to be case insensitive (default no)
+#'
+#' @return `tibble`
 #' @export
 #'
 #' @examples
+#' library(dplyr)
+#' library(entities)
+#' library(ggplot2)
+#' data(diamonds)
+#' diamonds <- tbl_df(diamonds)
+#' d <- data_frame(regex_name = c("^Idea", "mium", "Good"),
+#' type = 1:3)
+#' # When they are inner_joined, only Good<->Good matches
+#' diamonds %>%
+#' inner_join(d, by = c(cut = "regex_name"))
+#'
+#' # but we can regex match them
+#' diamonds %>%
+#' tbl_regex_join(d, by = c(cut = "regex_name"), mode = "inner")
+#'
+#'
 tbl_regex_join <-
   function (x,
             y,
@@ -79,10 +89,11 @@ tbl_regex_join <-
 
 #' String Distance Fuzzy Joins
 #'
+#' Join two tables based on fuzzy string matching of their columns. This is useful, for example, in matching free-form inputs in a survey or online form, where it can catch misspellings and small personal changes.
+#'
 #' @param x
 #' @param y
 #' @param by
-#' @param distance
 #' @param methods \itemize{
 #' \item osa
 #' \item lv
@@ -104,14 +115,27 @@ tbl_regex_join <-
 #' }
 #' @param ignore_case if `TRUE` ignores case
 #' @param distance_col if given, will add a column with this name containing the difference between the two
+#' @param max_dist Maximum distance to use for joining
 #' @param ... Arguments passed on to stringdist
-
-
 #'
-#' @return
+#' @return `tibble`
 #' @export
 #'
 #' @examples
+#' library(dplyr)
+#' library(entities)
+#' library(ggplot2)
+#' data(diamonds)
+#' d <- data_frame(approximate_name = c("Idea", "Premiums", "Premioom",
+#' "VeryGood", "VeryGood", "Faiir"),
+#' type = 1:6)
+#' # no matches when they are inner-joined:
+#' diamonds %>%
+#' inner_join(d, by = c(cut = "approximate_name"))
+#'
+#' diamonds %>%
+#' tbl_stringdist_join(d, mode = "inner", by = c(cut = "approximate_name"), distance_col = NULL)
+#'
 tbl_stringdist_join  <-
   function(x,
            y,
@@ -130,7 +154,7 @@ tbl_stringdist_join  <-
 
     1:nrow(df_input) %>%
       map_dfr(function(row_x) {
-        df_row <- df_input[row_x,]
+        df_row <- df_input[row_x, ]
 
         max_d <- df_row$max_dist
         method <- df_row$method
@@ -178,6 +202,7 @@ tbl_stringdist_join  <-
   }
 
 #' Join two tables based on a distance metric of one or more columns
+#'
 #' This differs from difference_join in that it considers all of the columns together when computing distance. This allows it to use metrics such as Euclidean or Manhattan that depend on multiple columns. Note that if you are computing with longitude or latitude, you probably want to use geo_join.
 #'
 #' @param x A tbl
@@ -188,10 +213,20 @@ tbl_stringdist_join  <-
 #' @param mode One of "inner", "left", "right", "full" "semi", or "anti"
 #' @param distance_col If given, will add a column with this name containing the distance between the two
 #'
-#' @return
+#' @return `tibble`
 #' @export
 #'
 #' @examples
+#' library(dplyr)
+#' library(entities)
+#' head(iris)
+#' sepal_lengths <- data_frame(Sepal.Length = c(5, 6, 7),
+#' Sepal.Width = 1:3)
+#'
+#' iris |>
+#' tbl_distance_join(sepal_lengths, mode = "inner", max_dist = 2)
+#'
+#'
 tbl_distance_join <-
   function(x,
            y,
@@ -209,7 +244,7 @@ tbl_distance_join <-
 
     1:nrow(df_input) %>%
       map_dfr(function(row_x) {
-        df_row <- df_input[row_x,]
+        df_row <- df_input[row_x, ]
 
         max_d <- df_row$max_dist
         method <- df_row$method
@@ -252,17 +287,26 @@ tbl_distance_join <-
 #'
 #' Join two tables based on absolute difference between their columns
 #'
-#' @param x
-#' @param y
-#' @param by
-#' @param max_dist
-#' @param mode
-#' @param distance_col
+#' @param x `tbl` x
+#' @param y `tbl` y
+#' @param by Columns by which to join the two tables
+#' @param max_dist Maximum distance to use for joining
+#' @param mode One of "inner", "left", "right", "full" "semi", or "anti"
+#' @param distance_col If given, will add a column with this name containing the difference between the two
 #'
-#' @return
+#' @return `tibble(`
 #' @export
 #'
 #' @examples
+#' library(dplyr)
+#' library(entities)
+#' head(iris)
+#' sepal_lengths <- data_frame(Sepal.Length = c(5, 6, 7),
+#' Sepal.Width = 1:3)
+#'
+#' iris |>
+#' tbl_difference_join(sepal_lengths, max_dist =  .5)
+#'
 tbl_difference_join <-
   function(x,
            y,
@@ -288,20 +332,25 @@ tbl_difference_join <-
 
 #' Fuzzy Join
 #'
-#' @param x
-#' @param y
-#' @param by
-#' @param match_fun
-#' @param multi_by
-#' @param multi_match_fun
-#' @param index_match_fun
-#' @param mode
-#' @param ...
+#' @param x `tbl` X
+#' @param y `tbl` Y
+#' @param by Columns of each to join
+#' @param match_fun Vectorized function given two columns, returning TRUE or FALSE as to whether they are a match. Can be a list of functions one for each pair of columns specified in by (if a named list, it uses the names in x). If only one function is given it is used on all column pairs.
+#' @param multi_by Columns to join, where all columns will be used to test matches together
+#' @param multi_match_fun Function to use for testing matches, performed on all columns in each data frame simultaneously
+#' @param index_match_fun Function to use for matching tables. Unlike match_fun and index_match_fun, this is performed on the original columns and returns pairs of indices.
+#' @param mode One of "inner", "left", "right", "full" "semi", or "anti"
+#' @param ... Extra arguments passed to match_fun
 #'
-#' @return
+#' @return `tbl`
 #' @export
 #'
 #' @examples
+#' library(entities)
+#' tbl_fuzzy_join(x = mtcars, y = mtcars, by = c("gear" = "cyl", "carb" = "cyl"), match_fun = list(`==`, `==`), mode = 'inner')
+#' tbl_fuzzy_join(mtcars, mtcars, by = "wt", match_fun = ~ .x > .y, mode = 'inner')
+#'
+
 tbl_fuzzy_join <-
   function(x,
            y,
@@ -333,12 +382,7 @@ tbl_fuzzy_join <-
                           y,
                           by = NULL,
                           max_dist  = NULL,
-                          method = c("haversine",
-                                     "geo",
-                                     "cosine",
-                                     "meeus",
-                                     "vincentysphere",
-                                     "vincentyellipsoid"),
+                          method = c("haversine"),
                           unit = c("miles", "km"),
                           mode = "inner",
                           distance_col = NULL,
@@ -374,45 +418,48 @@ tbl_fuzzy_join <-
 #' @param y
 #' @param by Columns by which to join the two tables
 #' @param max_dist Maximum distance to use for joining
-#' @param method Method to use for computing distance: one of "haversine" (default), "geo", "cosine", "meeus", "vincentysphere", "vincentyellipsoid"
+#' @param methods Method to use for computing distance: one of "haversine" (default), "geo", "cosine", "meeus", "vincentysphere", "vincentyellipsoid"
 #' @param unit Unit of distance for threshold (default "miles")
 
 #' @param mode One of "inner", "left", "right", "full" "semi", or "anti"
 
 
 #' @param distance_col If given, will add a column with this name containing the geographical distance between the two
-#'
+#' @param x `tbl` X
+#' @param y  `tbl` T
+#' @param by Columns by which to join the two tables
+#' @param max_dist Maximum distance to use for joining
+#' @param methods Method to use for computing distance: one of "haversine" (default), "geo", "cosine", "meeus", "vincentysphere", "vincentyellipsoid"
+#' @param unit Unit of distance for threshold (default "miles")
+#' @param mode One of "inner", "left", "right", "full" "semi", or "anti"
 #' @param ... Extra arguments passed on to the distance method
-#' @param x
-#' @param y
-#' @param by
-#' @param max_dist
-#' @param method
-#' @param unit
-#' @param mode
 #'
-#' @return
+#' @return `tibble`
 #' @export
 #'
 #' @examples
+#'
+
+
+
 tbl_geo_join <-
   function(x,
            y,
            by = NULL,
            max_dist  = NULL,
-           method = c("haversine",
-                      "geo",
-                      "cosine",
-                      "meeus",
-                      "vincentysphere",
-                      "vincentyellipsoid"),
-           unit = c("miles", "km"),
+           methods = c("haversine",
+                       "geo",
+                       "cosine",
+                       "meeus",
+                       "vincentysphere",
+                       "vincentyellipsoid"),
+           unit = c("miles"),
            mode = "inner",
            distance_col = NULL,
            ...) {
     df_input <-
       expand.grid(
-        method = method,
+        method = methods,
         unit = unit,
         max_dist = max_dist,
         stringsAsFactors = F
@@ -421,7 +468,7 @@ tbl_geo_join <-
 
     1:nrow(df_input) %>%
       map_dfr(function(row_x) {
-        df_row <- df_input[row_x,]
+        df_row <- df_input[row_x, ]
 
         max_d <- df_row$max_dist
         method <- df_row$method
@@ -442,7 +489,49 @@ tbl_geo_join <-
   }
 
 
-# variables ---------------------------------------------------------------
+
+# combine -----------------------------------------------------------------
+
+#' Create combonation of a variable
+#'
+#' @param data a `tibble`
+#' @param variable variable name
+#' @param override_names if `TRUE` overrides `from` `to` with actual variable name
+#'
+#' @return `tibble`
+#' @export
+#'
+#' @examples
+#' library(entities)
+#' tbl_combine_all_variable(data = ggplot2::diamonds, variable = 'color')
+#'
+#'
+tbl_combine_all_variable <-
+  function(data, variable, override_names = F) {
+    data <-
+      data |>
+      dplyr::select(!!!syms(variable)) |>
+      distinct() |>
+      mutate_if(is.factor, as.character) |>
+      tidystringdist::tidy_comb_all(!!sym(variable)) |>
+      setNames(c("from", "to"))
+
+    if (override_names) {
+      actual_names <- c("from", "to")
+      data <- data |>
+        setNames(glue("{variable}_{actual_names}") |> as.character())
+    }
+
+    data <- data |>
+      mutate(variable) |>
+      select(variable, everything())
+
+    data
+  }
+
+# variables_string_distance ---------------------------------------------------------------
+
+
 
 .tbl_variable_stringdist <-
   function(data,
@@ -464,11 +553,14 @@ tbl_geo_join <-
       stop("Enter variable")
     }
     data <-
-      data %>%
-      filter(!is.na(!!sym(variable))) %>%
-      tidy_comb_all(!!sym(variable)) %>%
-      tidy_stringdist(method = method, ...) %>%
-      mutate(variable) %>%
+      data |>
+      filter(!is.na(!!sym(variable))) |>
+      dplyr::select(!!!syms(variable)) |>
+      distinct() |>
+      mutate_if(is.factor, as.character) |>
+      tidystringdist::tidy_comb_all(!!sym(variable)) |>
+      tidy_stringdist(method = method, ...) |>
+      mutate(variable) |>
       select(variable, everything())
 
     data <- data %>% mutate_if(is.numeric, list(function(x) {
@@ -499,19 +591,26 @@ tbl_geo_join <-
   }
 
 
-#' Variable String Distance
+#' Tidy String Distance Calculation from Variable
 #'
-#' @param data
-#' @param variables
-#' @param method
-#' @param clean_names
-#' @param return_wide
-#' @param ...
+#' Calculate tidy string distance for a set of variables
+#' @param data a `tibble`
+#' @param variables vector of varibles to caluclate distance
+#' @param method method	one of the methods implemented in the stringdist package — "osa", "lv", "dl", "hamming", "lcs", "qgram", "cosine", "jaccard", "jw", "soundex". See stringdist-metrics
+#' @param clean_names if `TRUE` clean names
+#' @param return_wide if `TRUE` widen long data
+#' @param ... other parameters passed to stringdist
 #'
 #' @return
 #' @export
 #'
 #' @examples
+#' library(entities)
+#' tbl_proust <- tibble(person = c("Albertine", "Françoise", "Gilberte", "Odette", "Charles"))
+#' tbl_variable_stringdist(data = tbl_proust, variables = "person")
+#' tbl_variable_stringdist(ggplot2::diamonds, variable = "cut")
+#'
+
 tbl_variable_stringdist <-
   function(data,
            variables = NULL,
@@ -528,23 +627,33 @@ tbl_variable_stringdist <-
            clean_names = T,
            return_wide = T,
            ...) {
-
     if (length(variables) == 0) {
       stop("Enter variables")
     }
 
     if (length(variables) > 1) {
       clean_names <- F
-      return_wide <- F
     }
 
-    variables %>%
-      map_dfr(function(x){
-        .tbl_variable_stringdist(data = data,
-                                 variable = x,
-                                 method = method,
-                                 clean_names = clean_names,
-                                 return_wide = return_wide)
+    data <-
+      variables %>%
+      map_dfr(function(x) {
+        .tbl_variable_stringdist(
+          data = data,
+          variable = x,
+          method = method,
+          clean_names = F,
+          return_wide = return_wide
+        )
       })
+
+    if (clean_names) {
+      data <- data |> janitor::clean_names()
+    }
+
+    data <- data |>
+      rename(from = v1, to = v2)
+
+    data
 
   }

@@ -14,11 +14,32 @@ tbl_difference_join(
 )
 }
 \arguments{
-\item{distance_col}{}
+\item{x}{`tbl` x}
+
+\item{y}{`tbl` y}
+
+\item{by}{Columns by which to join the two tables}
+
+\item{max_dist}{Maximum distance to use for joining}
+
+\item{mode}{One of "inner", "left", "right", "full" "semi", or "anti"}
+
+\item{distance_col}{If given, will add a column with this name containing the difference between the two}
 }
 \value{
-
+`tibble(`
 }
 \description{
 Join two tables based on absolute difference between their columns
+}
+\examples{
+library(dplyr)
+library(entities)
+head(iris)
+sepal_lengths <- data_frame(Sepal.Length = c(5, 6, 7),
+Sepal.Width = 1:3)
+
+iris |>
+tbl_difference_join(sepal_lengths, max_dist =  .5)
+
 }

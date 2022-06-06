@@ -24,9 +24,6 @@ query_words(
 
 \item{return_message}{}
 }
-\value{
-
-}
 \description{
 Query Search engies
 }

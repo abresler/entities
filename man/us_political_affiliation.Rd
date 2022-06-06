@@ -6,9 +6,6 @@
 \usage{
 us_political_affiliation(snake_names = F)
 }
-\value{
-
-}
 \description{
 US political affiliations by last name
 }

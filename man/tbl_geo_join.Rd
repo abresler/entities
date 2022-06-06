@@ -9,31 +9,35 @@ tbl_geo_join(
   y,
   by = NULL,
   max_dist = NULL,
-  method = c("haversine", "geo", "cosine", "meeus", "vincentysphere",
+  methods = c("haversine", "geo", "cosine", "meeus", "vincentysphere",
     "vincentyellipsoid"),
-  unit = c("miles", "km"),
+  unit = c("miles"),
   mode = "inner",
   distance_col = NULL,
   ...
 )
 }
 \arguments{
+\item{x}{`tbl` X}
+
+\item{y}{`tbl` T}
+
 \item{by}{Columns by which to join the two tables}
 
 \item{max_dist}{Maximum distance to use for joining}
 
-\item{method}{Method to use for computing distance: one of "haversine" (default), "geo", "cosine", "meeus", "vincentysphere", "vincentyellipsoid"}
+\item{methods}{Method to use for computing distance: one of "haversine" (default), "geo", "cosine", "meeus", "vincentysphere", "vincentyellipsoid"}
 
 \item{unit}{Unit of distance for threshold (default "miles")}
 
-\item{mode}{}
+\item{mode}{One of "inner", "left", "right", "full" "semi", or "anti"}
 
 \item{distance_col}{If given, will add a column with this name containing the geographical distance between the two}
 
 \item{...}{Extra arguments passed on to the distance method}
 }
 \value{
-
+`tibble`
 }
 \description{
 Join two tables based on a geo distance of longitudes and latitudes

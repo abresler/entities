@@ -16,9 +16,6 @@ classify_wru_names(
 \arguments{
 \item{return_message}{}
 }
-\value{
-
-}
 \description{
 Classify name columns for WRU ethnicity
 }

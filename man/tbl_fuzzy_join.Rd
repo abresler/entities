@@ -17,11 +17,33 @@ tbl_fuzzy_join(
 )
 }
 \arguments{
-\item{...}{}
+\item{x}{`tbl` X}
+
+\item{y}{`tbl` Y}
+
+\item{by}{Columns of each to join}
+
+\item{match_fun}{Vectorized function given two columns, returning TRUE or FALSE as to whether they are a match. Can be a list of functions one for each pair of columns specified in by (if a named list, it uses the names in x). If only one function is given it is used on all column pairs.}
+
+\item{multi_by}{Columns to join, where all columns will be used to test matches together}
+
+\item{multi_match_fun}{Function to use for testing matches, performed on all columns in each data frame simultaneously}
+
+\item{index_match_fun}{Function to use for matching tables. Unlike match_fun and index_match_fun, this is performed on the original columns and returns pairs of indices.}
+
+\item{mode}{One of "inner", "left", "right", "full" "semi", or "anti"}
+
+\item{...}{Extra arguments passed to match_fun}
 }
 \value{
-
+`tbl`
 }
 \description{
 Fuzzy Join
+}
+\examples{
+library(entities)
+tbl_fuzzy_join(x = mtcars, y = mtcars, by = c("gear" = "cyl", "carb" = "cyl"), match_fun = list(`==`, `==`), mode = 'inner')
+tbl_fuzzy_join(mtcars, mtcars, by = "wt", match_fun = ~ .x > .y, mode = 'inner')
+
 }

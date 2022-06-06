@@ -21,12 +21,6 @@ classify_last_names(
 
 \item{return_message}{}
 }
-\value{
-
-}
 \description{
 Classify a vectore last names using the WRU model
-}
-\examples{
-
 }

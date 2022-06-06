@@ -17,6 +17,8 @@ tbl_stringdist_join(
 )
 }
 \arguments{
+\item{max_dist}{Maximum distance to use for joining}
+
 \item{methods}{\itemize{
 \item osa
 \item lv
@@ -45,8 +47,24 @@ tbl_stringdist_join(
 \item{...}{Arguments passed on to stringdist}
 }
 \value{
-
+`tibble`
 }
 \description{
-String Distance Fuzzy Joins
+Join two tables based on fuzzy string matching of their columns. This is useful, for example, in matching free-form inputs in a survey or online form, where it can catch misspellings and small personal changes.
+}
+\examples{
+library(dplyr)
+library(entities)
+library(ggplot2)
+data(diamonds)
+d <- data_frame(approximate_name = c("Idea", "Premiums", "Premioom",
+"VeryGood", "VeryGood", "Faiir"),
+type = 1:6)
+# no matches when they are inner-joined:
+diamonds \%>\%
+inner_join(d, by = c(cut = "approximate_name"))
+
+diamonds \%>\%
+tbl_stringdist_join(d, mode = "inner", by = c(cut = "approximate_name"), distance_col = NULL)
+
 }

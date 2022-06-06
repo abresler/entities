@@ -7,11 +7,37 @@
 tbl_regex_join(x, y, by = NULL, mode = "inner", ignore_case = FALSE)
 }
 \arguments{
-\item{ignore_case}{}
+\item{x}{`tbl` X}
+
+\item{y}{`tbl Y`}
+
+\item{by}{Columns of each to join}
+
+\item{mode}{One of "inner", "left", "right", "full" "semi", or "anti"}
+
+\item{ignore_case}{Whether to be case insensitive (default no)}
 }
 \value{
-
+`tibble`
 }
 \description{
-Regex Join
+Join a table with a string column by a regular expression column in another table
+}
+\examples{
+library(dplyr)
+library(entities)
+library(ggplot2)
+data(diamonds)
+diamonds <- tbl_df(diamonds)
+d <- data_frame(regex_name = c("^Idea", "mium", "Good"),
+type = 1:3)
+# When they are inner_joined, only Good<->Good matches
+diamonds \%>\%
+inner_join(d, by = c(cut = "regex_name"))
+
+# but we can regex match them
+diamonds \%>\%
+tbl_regex_join(d, by = c(cut = "regex_name"), mode = "inner")
+
+
 }

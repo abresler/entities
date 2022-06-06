@@ -4,10 +4,13 @@
 \alias{dictionary_gleif_entity_types}
 \title{GLEIF entity list}
 \usage{
-dictionary_gleif_entity_types()
+dictionary_gleif_entity_types(
+ 
+    url = "https://www.gleif.org/media/pages/about-lei/code-lists/iso-20275-entity-legal-forms-code-list/70ffe8dcfc-1654157922/2021-10-21-elf-code-list-v1.4.1.csv"
+)
 }
-\value{
-
+\arguments{
+\item{url}{url with most recent CSV}
 }
 \description{
 Dictionary of GLEIF entities

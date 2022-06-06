@@ -15,9 +15,6 @@ tbl_last_name(
 \arguments{
 \item{return_only_names}{}
 }
-\value{
-
-}
 \description{
 Parse name column into parts
 }

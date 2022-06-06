@@ -27,9 +27,6 @@ fb_last_names(
 
 \item{assign_to_environment}{if \code{TRUE} assigns nested tibbles to environment}
 }
-\value{
-
-}
 \description{
 Forebears last name data
 }
