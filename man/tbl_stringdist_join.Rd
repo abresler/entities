@@ -52,6 +52,9 @@ tbl_stringdist_join(
 \description{
 Join two tables based on fuzzy string matching of their columns. This is useful, for example, in matching free-form inputs in a survey or online form, where it can catch misspellings and small personal changes.
 }
+\details{
+Look at `https://www.rdocumentation.org/packages/stringdist/versions/0.9.4.6/topics/stringdist-metrics` for details on join methods
+}
 \examples{
 library(dplyr)
 library(entities)

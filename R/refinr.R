@@ -76,14 +76,14 @@
       if ("soundex" %in% phonics_methods) {
         data <-
           data %>%
-          mutate(UQ(glue("slugSoundex{part}")) := x %>% soundex(maxCodeLen = phonics_length, clean = F))
+          mutate(UQ(glue("slugSoundex_{part}")) := x %>% soundex(maxCodeLen = phonics_length, clean = F))
       }
 
       if ("caverphone" %in% phonics_methods) {
         data <-
           data %>%
           mutate(
-            UQ(glue("slugCaverphone{part}")) := x %>% caverphone(maxCodeLen = phonics_length, clean = F)
+            UQ(glue("slugCaverphone_{part}")) := x %>% caverphone(maxCodeLen = phonics_length, clean = F)
           )
       }
 
@@ -91,13 +91,13 @@
         data <-
           data %>%
           mutate(
-            UQ(glue("slugNYSIIS{part}")) := x %>% nysiis(maxCodeLen = phonics_length, clean = F)
+            UQ(glue("slugNYSIIS_{part}")) := x %>% nysiis(maxCodeLen = phonics_length, clean = F)
           )
       }
       if ("metaphone" %in% phonics_methods) {
         data <-
           data %>%
-          mutate(UQ(glue("slugMetaphone{part}")) := x %>% metaphone(maxCodeLen = phonics_length, clean = F))
+          mutate(UQ(glue("slugMetaphone_{part}")) := x %>% metaphone(maxCodeLen = phonics_length, clean = F))
       }
     }
 
@@ -117,12 +117,23 @@
 #' @param edit_threshold
 #' @param ignore_words
 #' @param numgram
-#' @param weight
+#' @param weight Numeric vector, indicating the weights to assign to the four edit operations (see details below), for the purpose of approximate string matching. Default values are c(d = 0.33, i = 0.33, s = 1, t = 0.5). This parameter gets passed along to the stringdist function. Must be either a numeric vector of length four, or NA.
 #' @param ...
+#' @param snake_names
 #'
 #' @return
 #' @import refinr phonics
 #' @export
+#' @details The values of arg \code{weight} are edit distance values that
+#'  get passed to the \code{stringdist} edit distance function. The
+#'  param takes four arguments, each one is a specific type of edit, with
+#'  default penalty value.
+#'  \itemize{
+#'  \item d: deletion, default value is 0.33
+#'  \item i: insertion, default value is 0.33
+#'  \item s: substitution, default value is 1
+#'  \item t: transposition, default value is 0.5
+#'  }
 #'
 #' @examples
 refine_columns <-
@@ -139,7 +150,7 @@ refine_columns <-
                       i = 0.33,
                       s = 1,
                       t = 0.5),
-           snake_names = F,
+           snake_names = T,
            ...) {
     if (length(entity_columns) == 0) {
       "No columns"
