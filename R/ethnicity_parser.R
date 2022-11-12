@@ -6,7 +6,7 @@
     if (return_message) {
       glue("Classifying {last_name}") %>%
         as.character() %>%
-        message()
+        cat(sep = '\n')
     }
     data <- tibble(surname = last_name)
     df <- predict_race(data, surname.only = T)
@@ -27,7 +27,7 @@
       df %>% filter(prob == max(prob)) %>% pull(race) %>% .[[1]]
 
     if (return_message) {
-      as.character(glue("{last_name} is likely {prediction}")) %>% message()
+      as.character(glue("{last_name} is likely {prediction}")) %>% cat(sep = "\n")
     }
 
     data <-
@@ -64,15 +64,7 @@ classify_last_names <-
     .classify_last_name_safe <- possibly(.classify_last_name, tibble())
 
     all_data <-
-      last_names %>%
-      unique() %>%
-      map_dfr(function(last_name) {
-        .classify_last_name_safe(
-          last_name = last_name,
-          return_message = return_message,
-          include_probabilities = include_probabilities
-        )
-      })
+      .classify_last_name_safe(last_name = last_names, return_message =return_message, include_probabilities = include_probabilities)
 
     if (length(last_name_column) > 0) {
       all_data <-
