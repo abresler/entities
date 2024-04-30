@@ -2,10 +2,18 @@
 % Please edit documentation in R/entities-package.R
 \docType{package}
 \name{entities}
+\alias{entities-package}
 \alias{entities}
 \title{entities}
 \description{
 Tools to resolve, parse and clean entities
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/abresler/entites}
+}
+
 }
 \author{
 Alex Bresler (abresler@asbcllc.com)
