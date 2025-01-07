@@ -9,6 +9,6 @@ Description: Clean, resolve and parse your entities.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Imports: countrycode, curl, dplyr, fuzzyjoin, glue, humaniformat, janitor, jsonlite, lubridate, memoise, phonics, purrr, qdap, qdapRegex, readr, refinr, rlang, rvest, stringdist, stringi, stringr, textclean, tibble, tidyr, tidystringdist, wru, xml2, formattable
 Suggests: memoise

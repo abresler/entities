@@ -16,7 +16,7 @@
 #'
 #' @examples
 dictionary_gleif_entity_types <-
-  memoise::memoise(function(url = "https://www.gleif.org/media/pages/about-lei/code-lists/iso-20275-entity-legal-forms-code-list/70ffe8dcfc-1654157922/2021-10-21-elf-code-list-v1.4.1.csv") {
+  memoise::memoise(function(url = "https://www.gleif.org/about-lei/code-lists/iso-20275-entity-legal-forms-code-list/2023-09-28-elf-code-list-v1.5.csv") {
     data <-
       read_csv(url) |> janitor::clean_names()
 
