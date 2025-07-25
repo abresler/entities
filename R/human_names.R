@@ -157,7 +157,7 @@ tbl_munge_human_names <- function(data, first_name, last_name, name_column) {
   data |>
     mutate(
       across(
-        where(is.character),
+        c(first_name, last_name),
         ~ .x |>
           str_replace_all("[^\\x20-\\x7E]", "") |>
           str_replace_all("\\.", "") |>
