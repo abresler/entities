@@ -39,16 +39,44 @@
 
 #' Append phonics methods to a tbl
 #'
-#' @param data
-#' @param name_columns
-#' @param phonics_methods
-#' @param phonics_length
+#' @param data A data frame or tibble containing name columns
+#' @param name_columns Character vector of column names to generate phonetic encodings for
+#' @param phonics_methods Character vector of phonetic methods to apply (e.g., "soundex", "metaphone", "caverphone", "nysiis")
+#' @param phonics_length Integer, maximum length of phonetic encodings (default 12L)
 #'
-#' @return
+#' @return A tibble with additional phonetic encoding columns
 #' @export
 #' @import phonics
 #'
 #' @examples
+#' \dontrun{
+#' # Match person names with similar sounds but different spellings
+#' people <- tibble::tibble(
+#'   name_first = c("Katherine", "Catherine", "Kathryn"),
+#'   name_last = c("Johnson", "Johnston", "Johnsen")
+#' )
+#' people |> tbl_phonics(
+#'   name_columns = c("name_first", "name_last"),
+#'   phonics_methods = c("soundex", "metaphone")
+#' )
+#'
+#' # Entity deduplication with custom encoding length
+#' companies <- tibble::tibble(
+#'   nameEntity = c("Acme Corp", "Akme Inc", "ACME LLC")
+#' )
+#' companies |> tbl_phonics(
+#'   name_columns = "nameEntity",
+#'   phonics_methods = c("soundex", "caverphone"),
+#'   phonics_length = 8L
+#' )
+#'
+#' # Compare all available phonetic encoding methods
+#' names_df <- tibble::tibble(name = c("Wright", "Right", "Rite"))
+#' names_df |> tbl_phonics(
+#'   name_columns = "name",
+#'   phonics_methods = c("soundex", "metaphone", "caverphone", "nysiis")
+#' )
+#' }
 tbl_phonics <-
   function(data,
            name_columns = NULL,

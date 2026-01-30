@@ -228,16 +228,23 @@
 #' \item ddg
 #' \item baidu
 #' }
-#' @param words
-#' @param quote
-#' @param rename_output
-#' @param additional_terms
-#' @param return_message
+#' @param words Character vector of search terms
+#' @param quote Logical, whether to quote the search terms (default TRUE)
+#' @param rename_output Logical, whether to rename output columns
+#' @param additional_terms Additional search terms to append
+#' @param return_message Logical, whether to print status messages
 #'
-#' @return
+#' @return A tibble with search URLs for each engine and search term combination
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' # Generate search URLs for multiple terms
+#' query_words(words = c("entity resolution", "fuzzy matching"))
+#'
+#' # Use specific search engines
+#' query_words(engines = c("google", "ddg"), words = "R programming")
+#' }
 query_words <-
   function(engines = c("ddg", "google", "baidu", "startpage", "yandex"),
            words = NULL,

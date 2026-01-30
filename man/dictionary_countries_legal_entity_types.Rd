@@ -4,7 +4,7 @@
 \alias{dictionary_countries_legal_entity_types}
 \title{Returns descriptions for countries corporate entity types}
 \usage{
-dictionary_countries_legal_entity_types(case = "upper", remove_periods = F)
+dictionary_countries_legal_entity_types(case = "upper", remove_periods = FALSE)
 }
 \arguments{
 \item{case}{text case \itemize{
@@ -16,15 +16,19 @@ dictionary_countries_legal_entity_types(case = "upper", remove_periods = F)
 \item{remove_periods}{if \code{TRUE} removes periods from text}
 }
 \value{
-\code{tibble} or NULL if data source unavailable
+Always returns NULL with a deprecation warning
 }
 \description{
-Note: The original data source (corporateinformation.com) is no longer available.
-This function now returns NULL with a warning. Consider using
-\code{dictionary_gleif_entity_types()} as an alternative source for entity type data.
+`r lifecycle::badge("deprecated")`
+
+This function is deprecated because the original data source
+(corporateinformation.com) is no longer available.
+Use \code{\link{dictionary_gleif_entity_types}()} instead, which provides
+comprehensive entity legal form data from the official ISO 20275 standard.
 }
 \examples{
 \dontrun{
-dictionary_countries_legal_entity_types()
+# Deprecated - use instead:
+dictionary_gleif_entity_types()
 }
 }

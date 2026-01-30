@@ -301,6 +301,7 @@ dictionary_entity_slugs <-
 #' @param entity_words dictionary of entity words coming from \code{dictionary_entity_slugs}
 #' @param variable output variable
 #' @param remove_first_last if \code{TRUE} removes first and last name
+#' @param snake_names if \code{TRUE} converts column names to snake_case (default FALSE)
 #'
 #' @return a \code{tibble}
 #' @export

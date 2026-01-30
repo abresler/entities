@@ -10,5 +10,5 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.3
-Imports: countrycode, curl, dplyr, fuzzyjoin, glue, humaniformat, janitor, jsonlite, lubridate, memoise, phonics, purrr, qdap, qdapRegex, readr, refinr, rlang, rvest, stringdist, stringi, stringr, textclean, tibble, tidyr, tidystringdist, wru, xml2, formattable
-Suggests: testthat (>= 3.0.0), rprojroot
+Imports: cachem, countrycode, curl, dplyr, fuzzyjoin, glue, humaniformat, janitor, jsonlite, lifecycle, lubridate, memoise, phonics, purrr, qdap, qdapRegex, readr, refinr, rlang, rvest, scales, stringdist, stringi, stringr, textclean, tibble, tidyr, tidystringdist, wru, xml2, formattable
+Suggests: testthat (>= 3.0.0), rprojroot, ggplot2

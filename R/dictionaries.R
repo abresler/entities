@@ -10,7 +10,10 @@
 #' Dictionary of GLEIF (Global Legal Entity Identifier Foundation) entity types
 #' from the ISO 20275 Entity Legal Forms Code List.
 #'
-#' @param url URL with most recent CSV file from GLEIF
+#' Results are cached to disk for cross-session persistence. Cache expires after
+#' 30 days or can be cleared with \code{dictionary_gleif_entity_types_clear_cache()}.
+#'
+#' @param url URL with most recent CSV file from GLEIF (v1.5, September 2023)
 #'
 #' @return A tibble containing entity legal forms with columns including
 #'   elf_code, country_of_formation, entity_legal_form_name_local_name,
@@ -21,43 +24,96 @@
 #' \dontrun{
 #' dictionary_gleif_entity_types()
 #' }
-dictionary_gleif_entity_types <-
-  memoise::memoise(function(url = "https://www.gleif.org/lei-data/code-lists/iso-20275-entity-legal-forms-code-list/2023-09-28-elf-code-list-v1.5.csv") {
-    data <-
-      read_csv(url) |> janitor::clean_names()
+#' @seealso \url{https://www.gleif.org/en/about-lei/iso-20275-entity-legal-forms-code-list}
+dictionary_gleif_entity_types <- local({
+  # Disk-based cache with 30-day expiration
 
-    data <-
-      data %>%
-      mutate_if(is.character, list(function(x) {
-        x %>% str_replace_all("\\;", "\\|")
-      }))
+  cache_dir <- file.path(tools::R_user_dir("entities", "cache"), "gleif")
+  disk_cache <- cachem::cache_disk(
+    dir = cache_dir,
+    max_age = 60 * 60 * 24 * 30  # 30 days in seconds
+  )
 
-
-    data <- data %>%
-      mutate(
-        entity_abbreviation = case_when(
-          !is.na(abbreviations_transliterated) ~ abbreviations_transliterated,
-          TRUE ~  abbreviations_local_language
-        )
-      ) %>%
-      select(
-        elf_code,
-        country_of_formation,
-        entity_legal_form_name_local_name,
-        entity_legal_form_name_transliterated_name_per_iso_01_140_10,
-        entity_abbreviation,
-        everything()
+  memoise::memoise(
+    function(url = "https://www.gleif.org/lei-data/code-lists/iso-20275-entity-legal-forms-code-list/2023-09-28-elf-code-list-v1.5.csv") {
+      data <- tryCatch(
+        readr::read_csv(url, show_col_types = FALSE) |> janitor::clean_names(),
+        error = function(e) {
+          warning(
+            "Failed to download GLEIF data. Using cached version if available. ",
+            "Error: ", conditionMessage(e),
+            call. = FALSE
+          )
+          return(NULL)
+        }
       )
 
-    data
-  })
+      if (is.null(data)) {
+        stop("GLEIF data unavailable and no cache exists.", call. = FALSE)
+      }
+
+      data <-
+        data %>%
+        dplyr::mutate(dplyr::across(
+          dplyr::where(is.character),
+          ~ stringr::str_replace_all(.x, "\\;", "\\|")
+        ))
+
+      data <- data %>%
+        dplyr::mutate(
+          entity_abbreviation = dplyr::case_when(
+            !is.na(abbreviations_transliterated) ~ abbreviations_transliterated,
+            TRUE ~ abbreviations_local_language
+          )
+        ) %>%
+        dplyr::select(
+          elf_code,
+          country_of_formation,
+          entity_legal_form_name_local_name,
+          entity_legal_form_name_transliterated_name_per_iso_01_140_10,
+          entity_abbreviation,
+          dplyr::everything()
+        )
+
+      data
+    },
+    cache = disk_cache
+  )
+})
+
+#' Clear GLEIF dictionary cache
+#'
+#' Clears the disk-based cache for \code{dictionary_gleif_entity_types()}.
+#' Use this to force a fresh download of the GLEIF data.
+#'
+#' @return Invisible NULL
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' dictionary_gleif_entity_types_clear_cache()
+#' }
+dictionary_gleif_entity_types_clear_cache <- function() {
+  cache_dir <- file.path(tools::R_user_dir("entities", "cache"), "gleif")
+  if (dir.exists(cache_dir)) {
+    unlink(cache_dir, recursive = TRUE)
+    message("GLEIF cache cleared. Next call will download fresh data.")
+  } else {
+    message("No cache to clear.")
+  }
+  invisible(NULL)
+}
 
 
 #' Returns descriptions for countries corporate entity types
 #'
-#' Note: The original data source (corporateinformation.com) is no longer available.
-#' This function now returns NULL with a warning. Consider using
-#' \code{dictionary_gleif_entity_types()} as an alternative source for entity type data.
+#' @description
+#' `r lifecycle::badge("deprecated")`
+#'
+#' This function is deprecated because the original data source
+#' (corporateinformation.com) is no longer available.
+#' Use \code{\link{dictionary_gleif_entity_types}()} instead, which provides
+#' comprehensive entity legal form data from the official ISO 20275 standard.
 #'
 #' @param case text case \itemize{
 #' \item `NULL`
@@ -66,42 +122,27 @@ dictionary_gleif_entity_types <-
 #' }
 #' @param remove_periods if \code{TRUE} removes periods from text
 #'
-#' @return \code{tibble} or NULL if data source unavailable
+#' @return Always returns NULL with a deprecation warning
 #' @export
 #'
 #' @examples
 #' \dontrun{
-#' dictionary_countries_legal_entity_types()
+#' # Deprecated - use instead:
+#' dictionary_gleif_entity_types()
 #' }
 dictionary_countries_legal_entity_types <-
-  function(case = "upper", remove_periods = F) {
-    url <- "https://www.corporateinformation.com/Company-Extensions-Security-Identifiers.aspx"
-    page <- tryCatch(
-      read_html(url),
-      error = function(e) {
-        warning(
-          "The corporateinformation.com data source is no longer available. ",
-          "Consider using dictionary_gleif_entity_types() as an alternative. ",
-          "Error: ", conditionMessage(e),
-          call. = FALSE
-        )
-        return(NULL)
-      }
+  function(case = "upper", remove_periods = FALSE) {
+    lifecycle::deprecate_warn(
+      when = "0.2.0",
+      what = "dictionary_countries_legal_entity_types()",
+      with = "dictionary_gleif_entity_types()",
+      details = c(
+        "The corporateinformation.com data source is permanently unavailable.",
+        "dictionary_gleif_entity_types() provides comprehensive entity legal forms ",
+        "from the official GLEIF ISO 20275 standard."
+      )
     )
-    if (is.null(page)) return(NULL)
-
-    codes <-
-      page %>% html_nodes(".StockPrice+ .bodyTxt td:nth-child(1)") %>% html_text() %>% str_squish() %>%
-      clean_text(case = case, remove_periods = remove_periods)
-
-    countries <-
-      page %>% html_nodes(".StockPrice+ .bodyTxt td:nth-child(2)") %>% html_text() %>% str_squish() %>% clean_text(case = case)
-
-    descriptions <-
-      page %>% html_nodes(".StockPrice+ .bodyTxt td:nth-child(3)") %>% html_text() %>% str_squish() %>%
-      clean_text(case = case)
-
-    tibble(code_legal_entity = codes, country = countries, description = descriptions)
+    NULL
   }
 
 
@@ -123,15 +164,15 @@ dictionary_countries_legal_entity_types <-
 #' entity_abbreviations()
 #' }
 entity_abbreviations <-
-  function(case = "upper", remove_commas = T, remove_periods = T) {
+  function(case = "upper", remove_commas = TRUE, remove_periods = TRUE) {
     slugs <-
       dictionary_gleif_entity_types() %>%
-      select(entity_abbreviation) %>%
-      filter(!is.na(entity_abbreviation)) %>%
-      distinct() %>%
-      pull() %>%
-      str_split("\\|") %>%
-      flatten_chr() %>%
+      dplyr::select(entity_abbreviation) %>%
+      dplyr::filter(!is.na(entity_abbreviation)) %>%
+      dplyr::distinct() %>%
+      dplyr::pull() %>%
+      stringr::str_split("\\|") %>%
+      purrr::list_c() %>%
       unique()
 
 

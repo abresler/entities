@@ -12,10 +12,32 @@
 #' @param last_name vector referencing last names
 #' @param name_column name of the `name` you wish to create
 #'
-#' @returns
+#' @returns A tibble with standardized name columns, extracted titles, and title categories
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' # Mixed titles: academic, religious, nobility
+#' df <- tibble::tibble(
+#'   first = c("Dr. Alice", "Rev. Michael", "Sir Arthur"),
+#'   last = c("Chen", "Williams", "Conan Doyle")
+#' )
+#' df |> tbl_munge_human_names("first", "last", "name_person")
+#'
+#' # Real-world messy data with inconsistent formatting
+#' df <- tibble::tibble(
+#'   first = c("DR JANE", "mr. bob;;", "Mary Mary"),
+#'   last = c("DOE, MD", "SMITH", "Jones")
+#' )
+#' df |> tbl_munge_human_names("first", "last", "name_standardized")
+#'
+#' # Edge cases: empty strings, NA values, special characters
+#' df <- tibble::tibble(
+#'   first = c("  john.;", "MARY", ""),
+#'   last = c("Smith", "smith", NA)
+#' )
+#' df |> tbl_munge_human_names("first", "last", "name_clean")
+#' }
 tbl_munge_human_names <- function(data, first_name, last_name, name_column) {
   stopifnot(is.character(first_name),
             is.character(last_name),
@@ -332,10 +354,31 @@ tbl_munge_human_names <- function(data, first_name, last_name, name_column) {
 #' @param data a data frame or tibble containing human names
 #' @param name_columns a character vector of column names containing human names to be processed
 #'
-#' @returns
+#' @returns A tibble with parsed name components (title, category, first, middle, last) for each input column
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' # Basic example with titles, middle names, and suffixes
+#' df <- tibble::tibble(
+#'   name_person = c(
+#'     "Dr. John Michael Smith",
+#'     "Jane Elizabeth Doe Jr",
+#'     "Rev. Robert James Wilson III",
+#'     "Mary Anne Johnson"
+#'   )
+#' )
+#' df |> tbl_extract_human_name_parts(name_columns = "name_person")
+#'
+#' # Processing multiple name columns simultaneously
+#' df_multi <- tibble::tibble(
+#'   name_primary = c("Col. James T Kirk", "Spock"),
+#'   name_secondary = c("Dr. Leonard McCoy", "Nyota Uhura")
+#' )
+#' df_multi |> tbl_extract_human_name_parts(
+#'   name_columns = c("name_primary", "name_secondary")
+#' )
+#' }
 tbl_extract_human_name_parts <-
   function(data, name_columns) {
   stopifnot(is.data.frame(data))

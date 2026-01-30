@@ -22,8 +22,28 @@ query_words(
 \item baidu
 }}
 
-\item{return_message}{}
+\item{words}{Character vector of search terms}
+
+\item{quote}{Logical, whether to quote the search terms (default TRUE)}
+
+\item{rename_output}{Logical, whether to rename output columns}
+
+\item{additional_terms}{Additional search terms to append}
+
+\item{return_message}{Logical, whether to print status messages}
+}
+\value{
+A tibble with search URLs for each engine and search term combination
 }
 \description{
 Query Search engies
+}
+\examples{
+\dontrun{
+# Generate search URLs for multiple terms
+query_words(words = c("entity resolution", "fuzzy matching"))
+
+# Use specific search engines
+query_words(engines = c("google", "ddg"), words = "R programming")
+}
 }

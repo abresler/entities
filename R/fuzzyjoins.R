@@ -93,9 +93,9 @@ tbl_regex_join <-
 #'
 #' Look at `https://www.rdocumentation.org/packages/stringdist/versions/0.9.4.6/topics/stringdist-metrics` for details on join methods
 #'
-#' @param x
-#' @param y
-#' @param by
+#' @param x A data frame or tibble (left table)
+#' @param y A data frame or tibble (right table)
+#' @param by A character vector of column names to join on
 #' @param methods \itemize{
 #' \item osa
 #' \item lv
@@ -416,22 +416,14 @@ tbl_fuzzy_join <-
 
 #' Join two tables based on a geo distance of longitudes and latitudes
 #'
-#' @param x
-#' @param y
-#' @param by Columns by which to join the two tables
+#' @param x A data frame or tibble (left table) with latitude and longitude columns
+#' @param y A data frame or tibble (right table) with latitude and longitude columns
+#' @param by Columns by which to join the two tables (lat/lon column names)
 #' @param max_dist Maximum distance to use for joining
 #' @param methods Method to use for computing distance: one of "haversine" (default), "geo", "cosine", "meeus", "vincentysphere", "vincentyellipsoid"
 #' @param unit Unit of distance for threshold (default "miles")
-
 #' @param mode One of "inner", "left", "right", "full" "semi", or "anti"
-
-
 #' @param distance_col If given, will add a column with this name containing the geographical distance between the two
-#' @param x `tbl` X
-#' @param y  `tbl` T
-#' @param by Columns by which to join the two tables
-#' @param max_dist Maximum distance to use for joining
-#' @param methods Method to use for computing distance: one of "haversine" (default), "geo", "cosine", "meeus", "vincentysphere", "vincentyellipsoid"
 #' @param unit Unit of distance for threshold (default "miles")
 #' @param mode One of "inner", "left", "right", "full" "semi", or "anti"
 #' @param ... Extra arguments passed on to the distance method
@@ -440,7 +432,43 @@ tbl_fuzzy_join <-
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' library(dplyr)
+#' library(entities)
 #'
+#' # Example 1: Match stores to nearby customers within 5 miles
+#' stores <- data.frame(
+#'   store_id = 1:3,
+#'   store_lat = c(40.7589, 40.7484, 40.7061),
+#'   store_lon = c(-73.9851, -73.9857, -74.0087)
+#' )
+#' customers <- data.frame(
+#'   customer_id = 1:5,
+#'   cust_lat = c(40.7614, 40.7505, 40.7282, 40.6892, 40.7831),
+#'   cust_lon = c(-73.9776, -73.9934, -73.7949, -74.0445, -73.9712)
+#' )
+#' tbl_geo_join(stores, customers,
+#'   by = c("store_lat" = "cust_lat", "store_lon" = "cust_lon"),
+#'   max_dist = 5, unit = "miles", distance_col = "distance_miles")
+#'
+#' # Example 2: Find airports within 30 km of a hotel
+#' airports <- data.frame(
+#'   airport = c("JFK", "LGA", "EWR"),
+#'   lat = c(40.6413, 40.7769, 40.6895),
+#'   lon = c(-73.7781, -73.8740, -74.1745)
+#' )
+#' hotels <- data.frame(hotel = "Manhattan", lat = 40.7589, lon = -73.9851)
+#' tbl_geo_join(airports, hotels, max_dist = 30, unit = "km")
+#'
+#' # Example 3: Anti-join - find stores NOT within 10 miles of warehouse
+#' all_stores <- data.frame(
+#'   store = 1:4,
+#'   lat = c(40.71, 40.72, 40.73, 41.50),
+#'   lon = c(-74.00, -74.01, -74.02, -73.50)
+#' )
+#' warehouse <- data.frame(name = "Central", lat = 40.70, lon = -74.00)
+#' tbl_geo_join(all_stores, warehouse, max_dist = 10, mode = "anti")
+#' }
 
 
 

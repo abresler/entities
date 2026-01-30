@@ -44,7 +44,7 @@ clean_text <- function(x,
                        remove_entity_types = F,
                        keep_entity_type = c("Association"),
                        ...) {
-  if (class(x) != "character") {
+  if (!is.character(x)) {
     "Not character" %>% message()
     return(x)
   }

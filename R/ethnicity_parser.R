@@ -1,15 +1,14 @@
 .classify_last_name <-
   function(last_name = "Smith",
-           return_message = T,
-           include_probabilities = F) {
-    library(wru)
+           return_message = TRUE,
+           include_probabilities = FALSE) {
     if (return_message) {
-      glue("Classifying {last_name}") %>%
+      glue::glue("Classifying {last_name}") %>%
         as.character() %>%
         cat(sep = '\n')
     }
-    data <- tibble(surname = last_name)
-    df <- predict_race(data, surname.only = T)
+    data <- tibble::tibble(surname = last_name)
+    df <- wru::predict_race(data, surname.only = TRUE)
 
     df <-
       as_tibble(df) %>% gather(race, prob, -surname) %>%
@@ -326,30 +325,35 @@ tbl_last_name <-
 classify_wru_names <-
   function(data,
            name_columns = NULL,
-           snake_names = F,
-           include_probabilities = F,
-           include_name_type = T,
-           return_message = T) {
+           snake_names = FALSE,
+           include_probabilities = FALSE,
+           include_name_type = TRUE,
+           return_message = TRUE) {
     if (length(name_columns) == 0) {
-      "Enter name columns to classify"
       return(data)
     }
-    .classify_names_safe <- possibly(.classify_names, tibble())
-    name_columns %>%
-      walk(function(name_column) {
-        data <<- .classify_names_safe(
-          data = data,
+
+    .classify_names_safe <- purrr::possibly(.classify_names, tibble::tibble())
+
+    # Use reduce instead of walk with global assignment (<<-)
+    # This is a pure functional approach without side effects
+    data <- purrr::reduce(
+      name_columns,
+      function(df, name_column) {
+        .classify_names_safe(
+          data = df,
           name_column = name_column,
           include_probabilities = include_probabilities,
           return_message = return_message,
           include_name_type = include_name_type
         )
-        data
-      })
+      },
+      .init = data
+    )
 
     if (snake_names) {
-      data <- data %>%
-        clean_names()
+      data <- janitor::clean_names(data)
     }
+
     data
   }

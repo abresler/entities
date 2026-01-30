@@ -20,6 +20,8 @@ resolve_data_parties(
 \item{remove_first_last}{if \code{TRUE} removes first and last name}
 
 \item{variable}{output variable}
+
+\item{snake_names}{if \code{TRUE} converts column names to snake_case (default FALSE)}
 }
 \value{
 a \code{tibble}
