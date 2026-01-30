@@ -27,13 +27,15 @@ tbl_variable_stringdist(
 
 \item{...}{other parameters passed to stringdist}
 }
+\value{
+A tibble with string distance calculations
+}
 \description{
 Calculate tidy string distance for a set of variables
 }
 \examples{
-library(entities)
-tbl_proust <- tibble(person = c("Albertine", "Françoise", "Gilberte", "Odette", "Charles"))
+\dontrun{
+tbl_proust <- tibble::tibble(person = c("Albertine", "Gilberte", "Odette"))
 tbl_variable_stringdist(data = tbl_proust, variables = "person")
-tbl_variable_stringdist(ggplot2::diamonds, variable = "cut")
-
+}
 }

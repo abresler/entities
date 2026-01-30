@@ -1,26 +1,32 @@
 #' Clean Text
 #'
-#' @param x
-#' @param case
-#' @param split_characters
-#' @param remove_digits
-#' @param remove_commas
-#' @param remove_periods
-#' @param remove_html
-#' @param remove_kern
-#' @param fix_comma_space
-#' @param ...
-#' @param remove_bracketed_text
-#' @param remove_dash
-#' @param remove_symbols
-#' @param remove_ampersand
-#' @param remove_entity_types
-#' @param custom_regex
+#' Cleans and normalizes text strings with various options for removing
+#' special characters, adjusting case, and removing entity type abbreviations.
 #'
-#' @return
+#' @param x character vector to clean
+#' @param case text case: "upper", "lower", or NULL for no change
+#' @param split_characters characters to split on and keep last element
+#' @param remove_digits if \code{TRUE} removes numeric digits
+#' @param remove_commas if \code{TRUE} removes commas
+#' @param remove_periods if \code{TRUE} removes periods
+#' @param remove_html if \code{TRUE} removes HTML tags
+#' @param remove_kern if \code{TRUE} removes kern characters
+#' @param fix_comma_space if \code{TRUE} adds space after commas
+#' @param ... additional arguments (unused)
+#' @param remove_bracketed_text if \code{TRUE} removes text in brackets
+#' @param remove_dash if \code{TRUE} removes dashes
+#' @param remove_symbols if \code{TRUE} removes symbols
+#' @param remove_ampersand if \code{TRUE} removes ampersands
+#' @param remove_entity_types if \code{TRUE} removes entity type abbreviations
+#' @param custom_regex custom regex patterns to remove
+#' @param keep_entity_type entity types to keep when removing entity types
+#'
+#' @return A cleaned character vector
 #' @export
 #'
 #' @examples
+#' clean_text("ACME, INC.")
+#' clean_text("Hello World  ", case = "lower")
 clean_text <- function(x,
                        case = NULL,
                        split_characters = NULL,
@@ -143,32 +149,38 @@ clean_text <- function(x,
 
 #' Clean Variables
 #'
-#' @param data
-#' @param variables
-#' @param all_character_columns
-#' @param exclude_url_columns
-#' @param case
-#' @param split_characters
-#' @param remove_bracketed_text
-#' @param remove_digits
-#' @param remove_commas
-#' @param remove_periods
-#' @param remove_html
-#' @param remove_dash
-#' @param remove_kern
-#' @param remove_symbols
-#' @param fix_comma_space
-#' @param remove_entity_types
-#' @param ...
-#' @param snake_names
-#' @param overwrite_variables
-#' @param custom_regex
-#' @param remove_ampersand
+#' Cleans multiple columns in a data frame using \code{clean_text()}.
 #'
-#' @return
+#' @param data a data frame or tibble
+#' @param variables character vector of column names to clean
+#' @param all_character_columns if \code{TRUE} cleans all character columns
+#' @param exclude_url_columns if \code{TRUE} excludes columns starting with "url"
+#' @param case text case: "upper", "lower", or NULL
+#' @param split_characters characters to split on
+#' @param remove_bracketed_text if \code{TRUE} removes bracketed text
+#' @param remove_digits if \code{TRUE} removes numeric digits
+#' @param remove_commas if \code{TRUE} removes commas
+#' @param remove_periods if \code{TRUE} removes periods
+#' @param remove_html if \code{TRUE} removes HTML tags
+#' @param remove_dash if \code{TRUE} removes dashes
+#' @param remove_kern if \code{TRUE} removes kern characters
+#' @param remove_symbols if \code{TRUE} removes symbols
+#' @param fix_comma_space if \code{TRUE} adds space after commas
+#' @param remove_entity_types if \code{TRUE} removes entity abbreviations
+#' @param ... additional arguments passed to clean_text
+#' @param snake_names if \code{TRUE} converts column names to snake_case
+#' @param overwrite_variables if \code{TRUE} overwrites original columns
+#' @param custom_regex custom regex patterns to remove
+#' @param remove_ampersand if \code{TRUE} removes ampersands
+#' @param keep_entity_type entity types to keep when removing entity types
+#'
+#' @return A tibble with cleaned variables
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' data %>% tbl_clean_variables(variables = c("name", "company"))
+#' }
 tbl_clean_variables <-
   function(data,
            variables = NULL,

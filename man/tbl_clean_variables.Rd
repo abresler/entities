@@ -30,8 +30,58 @@ tbl_clean_variables(
 )
 }
 \arguments{
-\item{remove_ampersand}{}
+\item{data}{a data frame or tibble}
+
+\item{variables}{character vector of column names to clean}
+
+\item{all_character_columns}{if \code{TRUE} cleans all character columns}
+
+\item{exclude_url_columns}{if \code{TRUE} excludes columns starting with "url"}
+
+\item{case}{text case: "upper", "lower", or NULL}
+
+\item{split_characters}{characters to split on}
+
+\item{custom_regex}{custom regex patterns to remove}
+
+\item{remove_bracketed_text}{if \code{TRUE} removes bracketed text}
+
+\item{remove_digits}{if \code{TRUE} removes numeric digits}
+
+\item{remove_commas}{if \code{TRUE} removes commas}
+
+\item{remove_periods}{if \code{TRUE} removes periods}
+
+\item{remove_html}{if \code{TRUE} removes HTML tags}
+
+\item{remove_dash}{if \code{TRUE} removes dashes}
+
+\item{remove_kern}{if \code{TRUE} removes kern characters}
+
+\item{remove_symbols}{if \code{TRUE} removes symbols}
+
+\item{fix_comma_space}{if \code{TRUE} adds space after commas}
+
+\item{remove_ampersand}{if \code{TRUE} removes ampersands}
+
+\item{remove_entity_types}{if \code{TRUE} removes entity abbreviations}
+
+\item{snake_names}{if \code{TRUE} converts column names to snake_case}
+
+\item{overwrite_variables}{if \code{TRUE} overwrites original columns}
+
+\item{keep_entity_type}{entity types to keep when removing entity types}
+
+\item{...}{additional arguments passed to clean_text}
+}
+\value{
+A tibble with cleaned variables
 }
 \description{
-Clean Variables
+Cleans multiple columns in a data frame using \code{clean_text()}.
+}
+\examples{
+\dontrun{
+data \%>\% tbl_clean_variables(variables = c("name", "company"))
+}
 }

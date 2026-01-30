@@ -6,9 +6,18 @@
 \usage{
 us_religions(snake_names = F)
 }
+\arguments{
+\item{snake_names}{if \code{TRUE} converts column names to snake_case}
+}
+\value{
+A tibble with religion data by surname, or NULL if the data source
+  is unavailable
+}
 \description{
 Forebears US Religion data
 }
 \examples{
+\dontrun{
 us_religions()
+}
 }

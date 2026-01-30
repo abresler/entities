@@ -25,8 +25,48 @@ clean_text(
 )
 }
 \arguments{
-\item{custom_regex}{}
+\item{x}{character vector to clean}
+
+\item{case}{text case: "upper", "lower", or NULL for no change}
+
+\item{split_characters}{characters to split on and keep last element}
+
+\item{custom_regex}{custom regex patterns to remove}
+
+\item{remove_bracketed_text}{if \code{TRUE} removes text in brackets}
+
+\item{remove_digits}{if \code{TRUE} removes numeric digits}
+
+\item{remove_commas}{if \code{TRUE} removes commas}
+
+\item{remove_periods}{if \code{TRUE} removes periods}
+
+\item{remove_html}{if \code{TRUE} removes HTML tags}
+
+\item{remove_dash}{if \code{TRUE} removes dashes}
+
+\item{remove_kern}{if \code{TRUE} removes kern characters}
+
+\item{remove_symbols}{if \code{TRUE} removes symbols}
+
+\item{fix_comma_space}{if \code{TRUE} adds space after commas}
+
+\item{remove_ampersand}{if \code{TRUE} removes ampersands}
+
+\item{remove_entity_types}{if \code{TRUE} removes entity type abbreviations}
+
+\item{keep_entity_type}{entity types to keep when removing entity types}
+
+\item{...}{additional arguments (unused)}
+}
+\value{
+A cleaned character vector
 }
 \description{
-Clean Text
+Cleans and normalizes text strings with various options for removing
+special characters, adjusting case, and removing entity type abbreviations.
+}
+\examples{
+clean_text("ACME, INC.")
+clean_text("Hello World  ", case = "lower")
 }

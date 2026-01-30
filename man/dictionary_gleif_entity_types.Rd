@@ -6,12 +6,23 @@
 \usage{
 dictionary_gleif_entity_types(
   url =
-    "https://www.gleif.org/about-lei/code-lists/iso-20275-entity-legal-forms-code-list/2023-09-28-elf-code-list-v1.5.csv"
+    "https://www.gleif.org/lei-data/code-lists/iso-20275-entity-legal-forms-code-list/2023-09-28-elf-code-list-v1.5.csv"
 )
 }
 \arguments{
-\item{url}{url with most recent CSV}
+\item{url}{URL with most recent CSV file from GLEIF}
+}
+\value{
+A tibble containing entity legal forms with columns including
+  elf_code, country_of_formation, entity_legal_form_name_local_name,
+  entity_abbreviation, and related metadata
 }
 \description{
-Dictionary of GLEIF entities
+Dictionary of GLEIF (Global Legal Entity Identifier Foundation) entity types
+from the ISO 20275 Entity Legal Forms Code List.
+}
+\examples{
+\dontrun{
+dictionary_gleif_entity_types()
+}
 }

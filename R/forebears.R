@@ -1,10 +1,14 @@
 #' Forebears country dictionary
 #'
-#' @return
+#' Returns a tibble of countries and their metadata from Forebears.io GeoJSON data.
+#'
+#' @return A tibble with columns: idCountry, nameCountry, codeCountry, isDisputed
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' dictionary_fb_countries()
+#' }
 dictionary_fb_countries <-
   function() {
     data <-
@@ -316,16 +320,32 @@ dictionary_fb_regions <-
 
 #' US political affiliations by last name
 #'
-#' @return
+#' @param snake_names if \code{TRUE} converts column names to snake_case
+#'
+#' @return A tibble with political affiliation data by surname, or NULL if the
+#'   data source is unavailable
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' us_political_affiliation()
+#' }
 us_political_affiliation <-
   function(snake_names = F) {
-    page <-
-      "https://forebears.io/united-states/demographics/political-affiliation-surname" %>%
-      read_html()
+    url <- "https://forebears.io/united-states/demographics/political-affiliation-surname"
+    page <- tryCatch(
+      read_html(url),
+      error = function(e) {
+        warning(
+          "Forebears political affiliation data is currently unavailable. ",
+          "The website may have changed its structure or blocked automated access. ",
+          "Error: ", conditionMessage(e),
+          call. = FALSE
+        )
+        return(NULL)
+      }
+    )
+    if (is.null(page)) return(NULL)
     table <- page %>% html_table(fill = F)
 
     df_reps <-
@@ -389,16 +409,32 @@ us_political_affiliation <-
 
 #' Forebears US Religion data
 #'
-#' @return
+#' @param snake_names if \code{TRUE} converts column names to snake_case
+#'
+#' @return A tibble with religion data by surname, or NULL if the data source
+#'   is unavailable
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' us_religions()
+#' }
 us_religions <-
   function(snake_names = F) {
-    page <-
-      "https://forebears.io/united-states/demographics/religion-surname" %>%
-      read_html()
+    url <- "https://forebears.io/united-states/demographics/religion-surname"
+    page <- tryCatch(
+      read_html(url),
+      error = function(e) {
+        warning(
+          "Forebears religion data is currently unavailable. ",
+          "The website may have changed its structure or blocked automated access. ",
+          "Error: ", conditionMessage(e),
+          call. = FALSE
+        )
+        return(NULL)
+      }
+    )
+    if (is.null(page)) return(NULL)
     table <- page %>% html_table(fill = F)
     religions <- page %>% html_nodes("h3") %>% html_text()
     df_religions <-
@@ -454,17 +490,24 @@ us_religions <-
 
 #' Forebears last name data
 #'
+#' Retrieves surname demographic data from forebears.io. Note that this function
+#' may fail if the website has changed its structure or blocked automated access.
+#'
 #' @param last_names vector of last names
 #' @param include_similar_names if \code{TRUE} includes table about similar names
 #' @param return_message if \code{TRUE} returns message
 #' @param nest_data  if \code{TRUE} nests tibble
 #' @param assign_to_environment if \code{TRUE} assigns nested tibbles to environment
-#' @param sleep_time if not \code{NULL} time between queiries
+#' @param sleep_time if not \code{NULL} time between queries
+#' @param snake_names if \code{TRUE} converts column names to snake_case
 #'
-#' @return
+#' @return A tibble with surname data, or empty tibble if data unavailable
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' fb_last_names(last_names = "Smith")
+#' }
 fb_last_names <-
   function(last_names = NULL,
            sleep_time = NULL,
@@ -550,20 +593,26 @@ fb_last_names <-
 
 #' Forebears country data
 #'
+#' Retrieves surname data by country from forebears.io. Note that this function
+#' may fail if the website has changed its structure or blocked automated access.
+#'
 #' @param locations vector of countries
+#' @param snake_names if \code{TRUE} converts column names to snake_case
 #' @param return_message if \code{TRUE} returns message
 #'
-#' @return
+#' @return A tibble with country surname data, or empty tibble if data unavailable
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' fb_locations(locations = c("China"))
+#' }
 fb_locations <-
   function(locations = NULL,
            snake_names = F,
            return_message = T) {
     if (length(locations) == 0) {
-      stop("Enter loctations")
+      stop("Enter locations")
     }
     df_locations <- .generate_country_urls(countries = locations)
     .parse_country_url_safe <-

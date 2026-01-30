@@ -15,12 +15,23 @@ classify_last_names(
 \arguments{
 \item{last_names}{vector of last names}
 
-\item{include_probabilities}{if \code{TRUE} appends probabilities}
+\item{include_probabilities}{if \code{TRUE} appends race probabilities}
 
-\item{last_name_column}{if not \code{NULL} last name column}
+\item{last_name_column}{column name for last names in output}
 
-\item{return_message}{}
+\item{snake_names}{if \code{TRUE} converts column names to snake_case}
+
+\item{return_message}{if \code{TRUE} prints progress messages}
+}
+\value{
+A tibble with surname and predicted race probabilities
 }
 \description{
-Classify a vectore last names using the WRU model
+Classify a vector of last names using the WRU (Who Are You) model
+to predict race/ethnicity probabilities.
+}
+\examples{
+\dontrun{
+classify_last_names(c("Jackson", "Cheng", "Wen"))
+}
 }

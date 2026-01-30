@@ -7,8 +7,22 @@
 entity_abbreviations(case = "upper", remove_commas = T, remove_periods = T)
 }
 \arguments{
-\item{remove_periods}{}
+\item{case}{text case for abbreviations: "upper" or "lower"}
+
+\item{remove_commas}{if \code{TRUE} removes commas from abbreviations}
+
+\item{remove_periods}{if \code{TRUE} removes periods from abbreviations}
+}
+\value{
+A character vector of regex patterns with word boundaries for
+  matching entity type abbreviations
 }
 \description{
-Entity Abbreviations
+Returns a vector of regex patterns for common legal entity abbreviations
+(e.g., LLC, Inc., Ltd.) derived from the GLEIF entity types dictionary.
+}
+\examples{
+\dontrun{
+entity_abbreviations()
+}
 }

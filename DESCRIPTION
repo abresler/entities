@@ -4,11 +4,11 @@ Title: Tools to deal with entities
 Version: 0.01.01
 Authors@R: person("Alex", "Bresler", email = "abresler@asbcllc.com", role = c("aut", "cre"))
 Maintainer: Alex Bresler <abresler@asbcllc.com>
-URL: https://github.com/abresler/entites
+URL: https://github.com/abresler/entities
 Description: Clean, resolve and parse your entities.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 Imports: countrycode, curl, dplyr, fuzzyjoin, glue, humaniformat, janitor, jsonlite, lubridate, memoise, phonics, purrr, qdap, qdapRegex, readr, refinr, rlang, rvest, stringdist, stringi, stringr, textclean, tibble, tidyr, tidystringdist, wru, xml2, formattable
-Suggests: memoise
+Suggests: testthat (>= 3.0.0), rprojroot

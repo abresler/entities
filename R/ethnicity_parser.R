@@ -43,18 +43,22 @@
 
 #' Classify last names
 #'
-#' Classify a vectore last names using the WRU model
+#' Classify a vector of last names using the WRU (Who Are You) model
+#' to predict race/ethnicity probabilities.
 #'
 #' @param last_names vector of last names
-#' @param include_probabilities if \code{TRUE} appends probabilities
-#' @param last_name_column if not \code{NULL} last name column
-#' @param return_message
+#' @param include_probabilities if \code{TRUE} appends race probabilities
+#' @param last_name_column column name for last names in output
+#' @param snake_names if \code{TRUE} converts column names to snake_case
+#' @param return_message if \code{TRUE} prints progress messages
 #'
-#' @return
+#' @return A tibble with surname and predicted race probabilities
 #' @export
 #' @import wru
 #' @examples
-#'
+#' \dontrun{
+#' classify_last_names(c("Jackson", "Cheng", "Wen"))
+#' }
 classify_last_names <-
   function(last_names = c("Jackson", "Cheng", "Wen"),
            include_probabilities = F,
@@ -116,18 +120,23 @@ classify_last_names <-
 
 #' Parse name column into parts
 #'
-#' @param data
-#' @param name_column
-#' @param include_name_type
-#' @param return_only_names
+#' Extracts last name from a name column using the humaniformat package.
 #'
-#' @return
+#' @param data a data frame or tibble
+#' @param name_column name of the column containing full names
+#' @param include_name_type if \code{TRUE} includes name type classification
+#' @param snake_names if \code{TRUE} converts column names to snake_case
+#' @param return_only_names if \code{TRUE} returns only name-related columns
+#'
+#' @return A tibble with the original data plus extracted name parts
 #' @export
 #' @import humaniformat tibble rlang purrr stringr
 #'
 #' @examples
+#' \dontrun{
 #' library(dplyr)
 #' starwars %>% tbl_last_name(name_column = "name")
+#' }
 tbl_last_name <-
   function(data,
            name_column = "namePrincipalInvestigator",
@@ -297,16 +306,23 @@ tbl_last_name <-
 
 #' Classify name columns for WRU ethnicity
 #'
-#' @param data
-#' @param name_columns
-#' @param include_probabilities
-#' @param include_name_type
-#' @param return_message
+#' Classifies names in specified columns using the WRU (Who Are You) model
+#' to predict race/ethnicity probabilities.
 #'
-#' @return
+#' @param data a data frame or tibble containing name columns
+#' @param name_columns character vector of column names to classify
+#' @param snake_names if \code{TRUE} converts column names to snake_case
+#' @param include_probabilities if \code{TRUE} includes probability columns
+#' @param include_name_type if \code{TRUE} includes name type classification
+#' @param return_message if \code{TRUE} prints progress messages
+#'
+#' @return A tibble with the original data plus WRU classification columns
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' data %>% classify_wru_names(name_columns = "nameLast")
+#' }
 classify_wru_names <-
   function(data,
            name_columns = NULL,

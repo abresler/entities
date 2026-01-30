@@ -13,13 +13,19 @@ re_resolve_documents(
 \arguments{
 \item{base_path}{base ACRIS data path}
 
-\item{documents}{vector of document types}
+\item{documents}{vector of document types to process}
 
-\item{boroughs}{vector of boroughs}
+\item{boroughs}{vector of NYC boroughs to process}
 }
 \value{
-invisible
+invisible (side effects: writes cleaned data to files)
 }
 \description{
-Re - Resolve ACRIS Parties
+Re-resolves and cleans party data from ACRIS (Automated City Register
+Information System) documents.
+}
+\examples{
+\dontrun{
+re_resolve_documents(documents = "ucc3 assignment", boroughs = "manhattan")
+}
 }

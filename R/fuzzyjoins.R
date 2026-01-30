@@ -603,15 +603,14 @@ tbl_combine_all_variable <-
 #' @param return_wide if `TRUE` widen long data
 #' @param ... other parameters passed to stringdist
 #'
-#' @return
+#' @return A tibble with string distance calculations
 #' @export
 #'
 #' @examples
-#' library(entities)
-#' tbl_proust <- tibble(person = c("Albertine", "Françoise", "Gilberte", "Odette", "Charles"))
+#' \dontrun{
+#' tbl_proust <- tibble::tibble(person = c("Albertine", "Gilberte", "Odette"))
 #' tbl_variable_stringdist(data = tbl_proust, variables = "person")
-#' tbl_variable_stringdist(ggplot2::diamonds, variable = "cut")
-#'
+#' }
 
 tbl_variable_stringdist <-
   function(data,

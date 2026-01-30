@@ -14,8 +14,27 @@ classify_wru_names(
 )
 }
 \arguments{
-\item{return_message}{}
+\item{data}{a data frame or tibble containing name columns}
+
+\item{name_columns}{character vector of column names to classify}
+
+\item{snake_names}{if \code{TRUE} converts column names to snake_case}
+
+\item{include_probabilities}{if \code{TRUE} includes probability columns}
+
+\item{include_name_type}{if \code{TRUE} includes name type classification}
+
+\item{return_message}{if \code{TRUE} prints progress messages}
+}
+\value{
+A tibble with the original data plus WRU classification columns
 }
 \description{
-Classify name columns for WRU ethnicity
+Classifies names in specified columns using the WRU (Who Are You) model
+to predict race/ethnicity probabilities.
+}
+\examples{
+\dontrun{
+data \%>\% classify_wru_names(name_columns = "nameLast")
+}
 }

@@ -6,9 +6,18 @@
 \usage{
 us_political_affiliation(snake_names = F)
 }
+\arguments{
+\item{snake_names}{if \code{TRUE} converts column names to snake_case}
+}
+\value{
+A tibble with political affiliation data by surname, or NULL if the
+  data source is unavailable
+}
 \description{
 US political affiliations by last name
 }
 \examples{
+\dontrun{
 us_political_affiliation()
+}
 }

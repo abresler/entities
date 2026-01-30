@@ -6,9 +6,14 @@
 \usage{
 dictionary_fb_countries()
 }
+\value{
+A tibble with columns: idCountry, nameCountry, codeCountry, isDisputed
+}
 \description{
-Forebears country dictionary
+Returns a tibble of countries and their metadata from Forebears.io GeoJSON data.
 }
 \examples{
+\dontrun{
 dictionary_fb_countries()
+}
 }

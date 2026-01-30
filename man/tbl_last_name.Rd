@@ -13,12 +13,25 @@ tbl_last_name(
 )
 }
 \arguments{
-\item{return_only_names}{}
+\item{data}{a data frame or tibble}
+
+\item{name_column}{name of the column containing full names}
+
+\item{include_name_type}{if \code{TRUE} includes name type classification}
+
+\item{snake_names}{if \code{TRUE} converts column names to snake_case}
+
+\item{return_only_names}{if \code{TRUE} returns only name-related columns}
+}
+\value{
+A tibble with the original data plus extracted name parts
 }
 \description{
-Parse name column into parts
+Extracts last name from a name column using the humaniformat package.
 }
 \examples{
+\dontrun{
 library(dplyr)
 starwars \%>\% tbl_last_name(name_column = "name")
+}
 }

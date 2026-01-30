@@ -115,14 +115,20 @@
 
 #' Re - Resolve ACRIS Parties
 #'
-#' @param base_path base ACRIS data path
-#' @param documents vector of document types
-#' @param boroughs vector of boroughs
+#' Re-resolves and cleans party data from ACRIS (Automated City Register
+#' Information System) documents.
 #'
-#' @return invisible
+#' @param base_path base ACRIS data path
+#' @param documents vector of document types to process
+#' @param boroughs vector of NYC boroughs to process
+#'
+#' @return invisible (side effects: writes cleaned data to files)
 #' @export
 #'
 #' @examples
+#' \dontrun{
+#' re_resolve_documents(documents = "ucc3 assignment", boroughs = "manhattan")
+#' }
 re_resolve_documents <-
   function(base_path = "Desktop/nyc_real_estate_data/ACRIS/",
            documents = "ucc3 assignment",

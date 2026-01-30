@@ -9,15 +9,22 @@ dictionary_countries_legal_entity_types(case = "upper", remove_periods = F)
 \arguments{
 \item{case}{text case \itemize{
 \item `NULL`
-\item `lower`
+\item `upper`
 \item `lower`
 }}
 
-\item{remove_periods}{}
+\item{remove_periods}{if \code{TRUE} removes periods from text}
 }
 \value{
-\code{tibble}
+\code{tibble} or NULL if data source unavailable
 }
 \description{
-Returns descriptions for countries corporate entity types
+Note: The original data source (corporateinformation.com) is no longer available.
+This function now returns NULL with a warning. Consider using
+\code{dictionary_gleif_entity_types()} as an alternative source for entity type data.
+}
+\examples{
+\dontrun{
+dictionary_countries_legal_entity_types()
+}
 }

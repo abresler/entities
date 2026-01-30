@@ -9,11 +9,19 @@ fb_locations(locations = NULL, snake_names = F, return_message = T)
 \arguments{
 \item{locations}{vector of countries}
 
+\item{snake_names}{if \code{TRUE} converts column names to snake_case}
+
 \item{return_message}{if \code{TRUE} returns message}
 }
+\value{
+A tibble with country surname data, or empty tibble if data unavailable
+}
 \description{
-Forebears country data
+Retrieves surname data by country from forebears.io. Note that this function
+may fail if the website has changed its structure or blocked automated access.
 }
 \examples{
+\dontrun{
 fb_locations(locations = c("China"))
+}
 }

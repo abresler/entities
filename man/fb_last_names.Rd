@@ -17,7 +17,7 @@ fb_last_names(
 \arguments{
 \item{last_names}{vector of last names}
 
-\item{sleep_time}{if not \code{NULL} time between queiries}
+\item{sleep_time}{if not \code{NULL} time between queries}
 
 \item{include_similar_names}{if \code{TRUE} includes table about similar names}
 
@@ -25,8 +25,19 @@ fb_last_names(
 
 \item{nest_data}{if \code{TRUE} nests tibble}
 
+\item{snake_names}{if \code{TRUE} converts column names to snake_case}
+
 \item{assign_to_environment}{if \code{TRUE} assigns nested tibbles to environment}
 }
+\value{
+A tibble with surname data, or empty tibble if data unavailable
+}
 \description{
-Forebears last name data
+Retrieves surname demographic data from forebears.io. Note that this function
+may fail if the website has changed its structure or blocked automated access.
+}
+\examples{
+\dontrun{
+fb_last_names(last_names = "Smith")
+}
 }
