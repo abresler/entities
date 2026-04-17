@@ -150,8 +150,7 @@ tbl_stringdist_join  <-
            ...) {
     df_input <-
       expand.grid(method = methods,
-                  max_dist = max_dist,
-                  stringsAsFactors = F) %>%
+                  max_dist = max_dist) %>%
       as_tibble()
 
     1:nrow(df_input) %>%
@@ -240,8 +239,7 @@ tbl_distance_join <-
            distance_col = NULL) {
     df_input <-
       expand.grid(method = methods,
-                  max_dist = max_dist,
-                  stringsAsFactors = F) %>%
+                  max_dist = max_dist) %>%
       as_tibble()
 
     1:nrow(df_input) %>%
@@ -491,8 +489,7 @@ tbl_geo_join <-
       expand.grid(
         method = methods,
         unit = unit,
-        max_dist = max_dist,
-        stringsAsFactors = F
+        max_dist = max_dist
       ) %>%
       as_tibble()
 

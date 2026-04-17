@@ -136,8 +136,7 @@ re_resolve_documents <-
   ) {
     df_inputs <-
       expand.grid(document = documents,
-                borough = boroughs,
-                stringsAsFactors = F) %>%
+                borough = boroughs) %>%
       as_tibble()
 
     .re_resolve_document_safe  <- possibly(.re_resolve_document, tibble())
