@@ -12,7 +12,12 @@
     mutate(
       # Ensure email column is lower case before parsing
       !!name_email_column := str_to_lower(.data[[name_email_column]]),
-      !!domain_col := str_extract(.data[[name_email_column]], "(?<=@)[^\\s>]+"),
+      # Reject malformed (multi-@) addresses to avoid domain-spoof silent-wrong
+      !!domain_col := if_else(
+        stringr::str_count(.data[[name_email_column]], "@") == 1L,
+        str_extract(.data[[name_email_column]], "(?<=@)[^\\s>]+"),
+        NA_character_
+      ),
       !!url_col := if_else(!is.na(.data[[domain_col]]),
                            paste0("https://", .data[[domain_col]]),
                            NA_character_)

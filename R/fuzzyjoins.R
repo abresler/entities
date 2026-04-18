@@ -147,10 +147,14 @@ tbl_stringdist_join  <-
            mode = "inner",
            ignore_case = FALSE,
            distance_col = "string_distance",
+           method = NULL,
            ...) {
+    if (!is.null(method)) methods <- method
+
     df_input <-
-      expand.grid(method = methods,
-                  max_dist = max_dist) %>%
+      expand.grid(method = as.character(methods),
+                  max_dist = max_dist,
+                  stringsAsFactors = FALSE) %>%
       as_tibble()
 
     1:nrow(df_input) %>%
@@ -158,7 +162,7 @@ tbl_stringdist_join  <-
         df_row <- df_input[row_x, ]
 
         max_d <- df_row$max_dist
-        method <- df_row$method
+        method <- as.character(df_row$method)
         .tbl_stringdist_join(
           x = x,
           y = y,

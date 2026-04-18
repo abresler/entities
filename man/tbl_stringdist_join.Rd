@@ -14,6 +14,7 @@ tbl_stringdist_join(
   mode = "inner",
   ignore_case = FALSE,
   distance_col = "string_distance",
+  method = NULL,
   ...
 )
 
@@ -26,6 +27,7 @@ ent_stringdist_join(
   mode = "inner",
   ignore_case = FALSE,
   distance_col = "string_distance",
+  method = NULL,
   ...
 )
 }

@@ -7,16 +7,16 @@
 \usage{
 dictionary_gleif_entity_types(
   url =
-    "https://www.gleif.org/lei-data/code-lists/iso-20275-entity-legal-forms-code-list/2023-09-28-elf-code-list-v1.5.csv"
+    "https://www.gleif.org/lei-data/code-lists/iso-20275-entity-legal-forms-code-list/2026-02-19-elf-code-list-v1.6.csv"
 )
 
 ent_gleif_types(
   url =
-    "https://www.gleif.org/lei-data/code-lists/iso-20275-entity-legal-forms-code-list/2023-09-28-elf-code-list-v1.5.csv"
+    "https://www.gleif.org/lei-data/code-lists/iso-20275-entity-legal-forms-code-list/2026-02-19-elf-code-list-v1.6.csv"
 )
 }
 \arguments{
-\item{url}{URL with most recent CSV file from GLEIF (v1.5, September 2023)}
+\item{url}{URL with most recent CSV file from GLEIF (v1.6, February 2026)}
 }
 \value{
 A tibble containing entity legal forms with columns including

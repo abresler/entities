@@ -39,6 +39,23 @@ A tibble with surname and predicted race probabilities
 Classify a vector of last names using the WRU (Who Are You) model
 to predict race/ethnicity probabilities.
 }
+\details{
+\strong{LIMITATIONS -- READ BEFORE USE:}
+\itemize{
+  \item The WRU model is validated on US Census BISG reconciliation and is
+    \strong{not} a race detector. Surname-only mode (used here) is the
+    weakest configuration; BISG with geography is the supported form.
+  \item Categories (Asian / Black / Hispanic / White / Other) are US Census
+    categories, not scientific classifications.
+  \item This function selects \code{max(prob)} and discards uncertainty.
+    Two surnames can tie at <1 pp yet produce deterministic labels.
+    Set \code{include_probabilities = TRUE} to retain the full distribution.
+  \item Non-US surnames have no validation in the WRU training data.
+  \item \strong{Do not use this function for individual identification,
+    differential treatment, hiring, lending, or legal determinations.}
+    Aggregate, probabilistic reconciliation only. See \code{?wru::predict_race}.
+}
+}
 \examples{
 \dontrun{
 classify_last_names(c("Jackson", "Cheng", "Wen"))

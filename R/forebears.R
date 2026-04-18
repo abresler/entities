@@ -211,8 +211,20 @@ dictionary_fb_regions <-
         as.character() %>%
         message()
     }
-    page <-
-      read_html(x = url)
+    page <- tryCatch(
+      read_html(x = url),
+      error = function(e) {
+        warning(
+          "forebears.io request failed for URL: ", url, " -- ",
+          conditionMessage(e),
+          call. = FALSE
+        )
+        NULL
+      }
+    )
+    if (is.null(page)) {
+      return(tibble())
+    }
     .world_rank_safe <- possibly(.world_rank, NA_integer_)
     .world_pop_safe <- possibly(.world_pop, NA_integer_)
     .world_prevelence_safe <- possibly(.world_prevelence, tibble())

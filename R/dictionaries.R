@@ -13,7 +13,7 @@
 #' Results are cached to disk for cross-session persistence. Cache expires after
 #' 30 days or can be cleared with \code{dictionary_gleif_entity_types_clear_cache()}.
 #'
-#' @param url URL with most recent CSV file from GLEIF (v1.5, September 2023)
+#' @param url URL with most recent CSV file from GLEIF (v1.6, February 2026)
 #'
 #' @return A tibble containing entity legal forms with columns including
 #'   elf_code, country_of_formation, entity_legal_form_name_local_name,
@@ -31,13 +31,17 @@ dictionary_gleif_entity_types <- local({
   cache_dir <- file.path(tools::R_user_dir("entities", "cache"), "gleif")
   disk_cache <- cachem::cache_disk(
     dir = cache_dir,
-    max_age = 60 * 60 * 24 * 30  # 30 days in seconds
+    max_age = 60 * 60 * 24 * 180  # 180 days (GLEIF updates ~semi-annually)
   )
 
   memoise::memoise(
-    function(url = "https://www.gleif.org/lei-data/code-lists/iso-20275-entity-legal-forms-code-list/2023-09-28-elf-code-list-v1.5.csv") {
+    function(url = "https://www.gleif.org/lei-data/code-lists/iso-20275-entity-legal-forms-code-list/2026-02-19-elf-code-list-v1.6.csv") {
       data <- tryCatch(
-        readr::read_csv(url, show_col_types = FALSE) |> janitor::clean_names(),
+        readr::read_csv(
+          url,
+          col_types = readr::cols(.default = readr::col_character()),
+          show_col_types = FALSE
+        ) |> janitor::clean_names(),
         error = function(e) {
           warning(
             "Failed to download GLEIF data. Using cached version if available. ",
